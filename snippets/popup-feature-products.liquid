@@ -1,0 +1,433 @@
+<div class="popup-featured-products">
+    <div class="popup-featured-products__main-product">
+        {% if block.settings.image_main_product != blank %}
+            <img src="{{ block.settings.image_main_product | img_url: '500x' }}" alt="{{ product.images.first.alt | escape }}" width="500" style="height: auto">
+        {% else %}
+            {% if product.images.size > 0 %}
+                {% assign first_image = product.images.first %}
+                <img src="{{ first_image | img_url: '500x' }}" alt="{{ first_image.alt | escape }}" width="500" style="height: 436px;object-fit: cover;">
+            {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <div class="popup-featured-products__featured-products">
+
+        <div>
+
+            {%- assign featured_products = product.metafields.custom.featured_products.value -%}
+
+            {% assign discount_amount_sum = 0 %}
+
+            {%- if featured_products -%}
+                {%- for featured_product in featured_products -%}
+                    {%- if featured_product != blank -%}
+                        {% assign discount_amount = featured_product.price | times: 3 | divided_by: 100 %}
+                        {% assign discount_amount_sum = discount_amount_sum | plus: discount_amount %}
+                    {%- endif -%}
+                {%- endfor -%}
+            {%- endif -%}
+
+            <h2 class="title">{{ block.settings.popup_feature_products_title }}</h2>
+
+            <p class="description">You are trying to add <span style="color: #464646; font-weight: bold">{{ product.title }}</span> to the cart.</p>
+
+            <p class="description">Complete your look and save <span class="discounted-price">{{ discount_amount_sum | money }} !</span></p>
+
+            {%- if featured_products -%}
+                <div
+                    class="featured_products"
+                    style="{% if featured_products.count <= 2 %} overflow-y: initial; {% endif %}"
+                >
+                    {%- for featured_product in featured_products -%}
+                        {%- if featured_product != blank -%}
+
+                            {% assign original_price = featured_product.price %}
+                            {% assign discount_percent = product.metafields.custom.discount.value %}
+                            {% assign discount_amount = original_price | times: discount_percent | divided_by: 100 %}
+                            {% assign discounted_price = original_price | minus: discount_amount %}
+
+                            {% assign discount_amount_sum = discount_amount_sum | plus: discount_amount %}
+
+                            <div class="popup-featured-products__featured-product">
+                                <div class="featured-product-item__img">
+                                    {% if featured_product.images.size > 0 %}
+                                        {% assign first_image = featured_product.images.first %}
+                                        <img src="{{ first_image | img_url: '500x' }}" alt="{{ first_image.alt | escape }}" width="88" height="100">
+                                    {% else %}
+                                        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                                    {% endif %}
+                                </div>
+                                <div class="featured-product-item__content">
+                                    <a class="popup-featured-products__featured-product-title" href="/products/{{ featured_product.handle }}">{{ featured_product.title }}</a>
+                                    <p class="popup-featured-products__featured-product-additional"> {{ featured_product.metafields.custom.additional_field.value}}</p>
+                                    {% if featured_product.variants.size > 1 %}
+                                        <div class="variant-skus">
+                                            {% for variant in product.variants %}
+                                                {% if variant.sku != blank %}
+                                                    <div class="variant-sku" data-variant-id="{{ variant.id }}">
+                                                        SKU: {{ variant.sku }}
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {% if featured_product.selected_or_first_available_variant.sku != blank %}
+                                            <div class="product-sku">SKU: {{ featured_product.selected_or_first_available_variant.sku }}</div>
+                                        {% endif %}
+                                    {% endif %}
+                                    <div class="price">
+                                        <span class="discounted-price">
+                                             {{ discounted_price | money }}
+                                        </span>
+                                        <span class="original-price">
+                                            {{ original_price | money }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        {%- endif -%}
+                    {%- endfor -%}
+                </div>
+            {%- else -%}
+                <p>No featured products found.</p>
+            {%- endif -%}
+        </div>
+        <div class="popup-featured-products__featured-products-buttons">
+
+            {%- assign featured_products = product.metafields.custom.featured_products.value -%}
+
+            <input type="hidden" id="main-product-id" value="{{ product.selected_or_first_available_variant.id }}">
+            <input
+                    type="hidden"
+                    id="featured-products-data"
+                    value='{% if featured_products %}
+                            [{% for featured_product in featured_products %}
+                                {% if featured_product != blank %}
+                                {"id": {{ featured_product.selected_or_first_available_variant.id | json }}}
+                                {% unless forloop.last %},{% endunless %}
+                                {% endif %}
+                            {% endfor %}]
+                        {% else %}[]{% endif %}'
+            >
+
+            <button
+                type="button"
+                class="popup-featured-products__btn cart-btn"
+                onclick="addAllProduct()"
+            >
+                Add to Cart
+                {%- render 'loading-spinner' -%}
+            </button>
+
+
+            <form method="post" action="/cart/add" class="hidden-form" id="custom-cart-form">
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                <input type="hidden" name="quantity" value="1">
+            </form>
+
+            <button
+                type="button"
+                class="popup-featured-products__btn  continue-to-cart-btn"
+                onclick="addMainProduct()"
+            >
+                Continue to the Cart
+                {%- render 'loading-spinner' -%}
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function addMainProduct() {
+        const form = document.getElementById('custom-cart-form');
+
+        fetch('/cart/add', {
+            method: 'POST',
+            body: new FormData(form)
+        })
+            .then(response => {
+                if (response.ok) {
+
+                    return Promise.all([
+                        fetch('/cart.js').then(res => res.json()),
+                        fetch('/?sections=cart-notification-product,cart-notification-button,cart-icon-bubble')
+                            .then(res => res.json())
+                    ]);
+                } else {
+                    throw new Error('Failed to add to cart');
+                }
+            })
+            .then(([cart, sections]) => {
+
+                updateCartCount(cart);
+
+                updateSections(sections);
+
+                showCartNotification();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error while adding product');
+            });
+    }
+
+    function addAllProduct() {
+        const mainProductId = parseInt(document.getElementById('main-product-id').value);
+        const featuredProductsData = document.getElementById('featured-products-data');
+        const featuredProducts = JSON.parse(featuredProductsData?.value || '[]');
+
+        const items = [
+            {
+                id: mainProductId,
+                quantity: 1
+            }
+        ];
+
+        featuredProducts.forEach(product => {
+            items.push({
+                id: product.id,
+                quantity: 1
+            });
+        });
+
+        fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ items: items })
+        })
+            .then(response => {
+                if (response.ok) {
+
+                    return Promise.all([
+                        fetch('/cart.js').then(res => res.json()),
+                        fetch('/?sections=cart-notification-product,cart-notification-button,cart-icon-bubble')
+                            .then(res => res.json())
+                    ]);
+                } else {
+                    throw new Error('Failed to add to cart');
+                }
+            })
+            .then(([cart, sections]) => {
+
+                updateCartCount(cart);
+
+                updateSections(sections);
+
+                showCartNotification();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error while adding product');
+            });
+    }
+
+    function updateCartCount(cart) {
+        document.querySelectorAll('.cart-count, .cart-item-count').forEach(el => {
+            el.textContent = cart.item_count;
+        });
+    }
+
+    function updateSections(sections) {
+
+        Object.keys(sections).forEach(sectionId => {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.innerHTML = sections[sectionId];
+            }
+        });
+    }
+
+    function showCartNotification() {
+        const cartNotification = document.querySelector('.cart-notification');
+        if (cartNotification) {
+            cartNotification.style.transform = 'translateY(0)';
+            cartNotification.style.transition = 'transform var(--duration-default) ease, visibility 0s';
+            cartNotification.style.visibility = 'visible';
+
+            setTimeout(() => {
+                cartNotification.style.transform = '';
+                cartNotification.style.transition = '';
+                cartNotification.style.visibility = '';
+            }, 5000);
+        }
+    }
+</script>
+
+{% style %}
+
+    .product-popup-modal__content--featured-products{
+        height: initial;
+        width: initial;
+        min-width: 918px;
+        max-width: 918px;
+    }
+
+    @media screen and (max-width: 918px) {
+        .product-popup-modal__content--featured-products{
+            max-width: 918px;
+            min-width: initial;
+            padding: 25px 15px !important;
+            height: 600px;
+        }
+    }
+
+    .popup-featured-products{
+        display: flex;
+        width: 100%;
+        gap: 10px;
+        flex-direction: {{ block.settings.main_image_position }};
+    }
+
+    .popup-featured-products__main-product{
+        height: auto;
+        width: 50%;
+    }
+
+    .popup-featured-products__featured-products{
+        justify-content: space-between;
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        padding-bottom: 10px;
+    }
+
+    @media screen and (max-width: 918px) {
+        .popup-featured-products{
+            flex-direction: column;
+        }
+
+        .popup-featured-products__main-product{
+            width: 100%;
+        }
+
+        .popup-featured-products__featured-products{
+           width: 100%;
+        }
+
+        .popup-featured-products__featured-products-buttons{
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .popup-featured-products__btn{
+            width: 100%;
+        }
+    }
+
+    .popup-featured-products__featured-products .title{
+        margin: 0 0 35px 0;
+        color: {{ block.settings.popup_main_color }};
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 24px;
+        letter-spacing: 0;
+    }
+
+    .popup-featured-products__featured-products .description{
+        margin: 0;
+        font-size: 14px;
+    }
+
+    .popup-featured-products__featured-products .featured_products{
+        margin-top: 25px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        height: 250px;
+        overflow-y: scroll;
+    }
+
+    .popup-featured-products__featured-product{
+        display: flex;
+        gap: 10px;
+    }
+
+    .popup-featured-products__featured-products-buttons{
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .popup-featured-products__featured-product p{
+        margin: 0;
+    }
+
+    .popup-featured-products__btn{
+        height: 44px;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: 0;
+        cursor: pointer;
+        border: 1px solid {{ block.settings.popup_main_color }};
+        background-color: transparent;
+        padding: 0 39px;
+        white-space: nowrap;
+    }
+
+    .popup-featured-products__btn:hover{
+        opacity: 0.6;
+    }
+
+    .featured-product-item__content{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    .popup-featured-products__featured-product-title {
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 24px;
+        color: #262C3E;
+        text-decoration: none;
+    }
+
+    .popup-featured-products__featured-product-additional{
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 16px;
+        letter-spacing: 0;
+        margin-top: -10px !important;
+    }
+
+    .product-sku{
+        font-size: 12px;
+        line-height: 14px;
+        letter-spacing: 0%;
+    }
+    .price{
+        display: flex;
+        gap: 15px;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 24px;
+        letter-spacing: 0;
+        margin-top: -5px !important;
+    }
+
+    .original-price{
+        text-decoration: line-through;
+        color: #666666;
+        font-weight: 400;
+    }
+
+    .discounted-price{
+        color: {{ block.settings.popup_main_color }};
+        font-weight: 700;
+        font-size: 18px;
+    }
+
+    .cart-btn {
+        background-color: {{ block.settings.popup_main_color }};
+        color: #fff;
+    }
+
+    .continue-to-cart-btn {
+        color: {{ block.settings.popup_main_color }};
+    }
+
+{% endstyle %}

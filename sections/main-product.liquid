@@ -455,7 +455,24 @@
                     {{ block.settings.text | default: block.settings.page.title | escape }}
                   </button>
                 </modal-opener>
-              {%- when 'share' -%}
+            {%- when 'popup-featured-products' -%}
+                {% if product.metafields.custom.featured_products.value != blank and section.settings.show_popup_feature_products == true %}
+                    <modal-opener
+                        class="product-popup-modal__opener quick-add-hidden"
+                        data-modal="#PopupModal-{{ block.id }}"
+                        {{ block.shopify_attributes }}
+                    >
+                        <button
+                            id="ProductPopup-{{ block.id }}"
+                            class="product-form__submit button button--full-width"
+                            type="button"
+                            aria-haspopup="dialog"
+                        >
+                            {{ block.settings.modal_btn_title | default: "Some text" | escape }}
+                        </button>
+                    </modal-opener>
+                {% endif %}
+            {%- when 'share' -%}
                 {% liquid
                   assign share_url = product.selected_variant.url | default: product.url | prepend: request.origin
                   render 'share-button', block: block, share_link: share_url
@@ -464,13 +481,15 @@
               {%- when 'variant_picker' -%}
                 {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
               {%- when 'buy_buttons' -%}
-                {%- render 'buy-buttons',
-                  block: block,
-                  product: product,
-                  product_form_id: product_form_id,
-                  section_id: section.id,
-                  show_pickup_availability: true
-                -%}
+                {% unless section.settings.show_popup_feature_products and product.metafields.custom.featured_products.value %}
+                    {%- render 'buy-buttons',
+                      block: block,
+                      product: product,
+                      product_form_id: product_form_id,
+                      section_id: section.id,
+                      show_pickup_availability: true
+                    -%}
+                {% endunless  %}
               {%- when 'rating' -%}
                 {%- if product.metafields.reviews.rating.value != blank -%}
                   <div class="rating-wrapper">
@@ -668,14 +687,17 @@
 
     {% render 'product-media-modal', variant_images: variant_images %}
 
-    {% assign popups = section.blocks | where: 'type', 'popup' %}
-    {%- for block in popups -%}
+      {% assign popups = section.blocks | where: 'type', 'popup' %}
+      {% assign popups_featured = section.blocks | where: 'type', 'popup-featured-products' %}
+      {% assign all_popups = popups | concat: popups_featured %}
+
+    {%- for block in all_popups -%}
       <modal-dialog id="PopupModal-{{ block.id }}" class="product-popup-modal" {{ block.shopify_attributes }}>
         <div
           role="dialog"
           aria-label="{{ block.settings.text }}"
           aria-modal="true"
-          class="product-popup-modal__content"
+          class="product-popup-modal__content {% if block.type == 'popup-featured-products' %} product-popup-modal__content--featured-products {% endif %}"
           tabindex="-1"
         >
           <button
@@ -686,10 +708,18 @@
           >
             {% render 'icon-close' %}
           </button>
-          <div class="product-popup-modal__content-info">
-            <h1 class="h2">{{ block.settings.page.title | escape }}</h1>
-            {{ block.settings.page.content }}
-          </div>
+
+            {% if block.type == 'popup-featured-products'  %}
+                {% render 'popup-feature-products', block: block %}
+            {% endif %}
+
+            {% if block.type == 'popup'  %}
+                <div class="product-popup-modal__content-info">
+                    <h1 class="h2">{{ block.settings.page.title | escape }}</h1>
+                    {{ block.settings.page.content }}
+                </div>
+            {% endif %}
+
         </div>
       </modal-dialog>
     {%- endfor -%}
@@ -1170,6 +1200,51 @@
           "id": "page",
           "type": "page",
           "label": "t:sections.main-product.blocks.popup.settings.page.label"
+        }
+      ]
+    },
+    {
+      "type": "popup-featured-products",
+      "name": "Pop-up featured-products",
+      "settings": [
+        {
+          "type": "text",
+          "id": "modal_btn_title",
+          "default": "Add to cart",
+          "label": "Modal btn title"
+        },
+        {
+          "type": "text",
+          "id": "popup_feature_products_title",
+          "default": "COMPLETE YOUR PURCHASE",
+          "label": "Popup feature products title"
+        },
+        {
+          "type": "color",
+          "id": "popup_main_color",
+          "label": "Popup main color",
+          "default": "#05117F"
+        },
+        {
+          "type": "select",
+          "id": "main_image_position",
+          "label": "Main image position",
+          "options": [
+            {
+              "value": "row",
+              "label": "Left"
+            },
+            {
+              "value": "row-reverse",
+              "label": "Right"
+            }
+          ],
+          "default": "row"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_main_product",
+          "label": "image main product"
         }
       ]
     },
@@ -2250,6 +2325,12 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 36
+    },
+    {
+      "type": "checkbox",
+      "id": "show_popup_feature_products",
+      "label": "Show popup feature products",
+      "default": true
     }
   ]
 }
