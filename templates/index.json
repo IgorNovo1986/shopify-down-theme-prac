@@ -19,19 +19,19 @@
             "heading_size": "h0"
           }
         },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "Reclaim Your Balance. Elevate Your Life.",
+            "text_style": "body"
+          }
+        },
         "button": {
           "type": "buttons",
           "settings": {
             "button_label_1": "Begin Your Wellness Journey",
             "button_link_1": "shopify://collections/all",
             "button_style_secondary_1": true
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "Reclaim Your Balance. Elevate Your Life.",
-            "text_style": "body"
           }
         }
       },
@@ -41,6 +41,7 @@
         "button"
       ],
       "settings": {
+        "image": "shopify://shop_images/Background_Image.png",
         "image_overlay_opacity": 40,
         "image_height": "large",
         "desktop_content_position": "bottom-center",
