@@ -9,30 +9,35 @@
  */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "image_banner_custom": {
+      "type": "image-banner-custom",
       "blocks": {
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Browse our latest products",
+            "heading": "Harmony of Body, Mind, and Space — All in One Solution",
             "heading_size": "h0"
           }
         },
         "button": {
           "type": "buttons",
           "settings": {
-            "button_label_1": "Shop all",
+            "button_label_1": "Begin Your Wellness Journey",
             "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "button_style_secondary_1": true
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "Reclaim Your Balance. Elevate Your Life.",
+            "text_style": "body"
           }
         }
       },
       "block_order": [
         "heading",
+        "text",
         "button"
       ],
       "settings": {
@@ -131,7 +136,7 @@
     }
   },
   "order": [
-    "image_banner",
+    "image_banner_custom",
     "featured_collection",
     "multicolumn_kEiHwQ"
   ]
