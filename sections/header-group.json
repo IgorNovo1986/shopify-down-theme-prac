@@ -49,7 +49,7 @@
         "enable_language_selector": true,
         "enable_customer_avatar": true,
         "mobile_logo_position": "center",
-        "fallback_image": "",
+        "fallback_image": "shopify://shop_images/placeholder-400x400.webp",
         "margin_bottom": 0,
         "padding_top": 20,
         "padding_bottom": 20
