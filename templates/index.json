@@ -54,91 +54,158 @@
         "show_text_below": false
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "animated_gallery_ecDaJY": {
+      "type": "animated-gallery",
+      "blocks": {
+        "image_UEj6Gd": {
+          "type": "image",
+          "settings": {}
+        },
+        "image_WLKHbp": {
+          "type": "image",
+          "settings": {}
+        },
+        "image_zajfm4": {
+          "type": "image",
+          "settings": {}
+        },
+        "image_H7agBb": {
+          "type": "image",
+          "settings": {}
+        },
+        "image_7xRfpA": {
+          "type": "image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "image_UEj6Gd",
+        "image_WLKHbp",
+        "image_zajfm4",
+        "image_H7agBb",
+        "image_7xRfpA"
+      ],
+      "name": "Scroll Gallery",
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "swipe_on_mobile": false,
-        "padding_top": 44,
-        "padding_bottom": 36
+        "title": "Norkaya Is More Than Just Hydrotherapy",
+        "sub_title": "Our journey is just beginning, and we will continue to innovate. Integrating wellness concepts into every facet of your life—from the water you immerse in to the spaces you inhabit.",
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
-    "multicolumn_kEiHwQ": {
-      "type": "multicolumn",
+    "slider_walmax_FfddYX": {
+      "type": "slider-walmax",
       "blocks": {
-        "column_LYy37a": {
-          "type": "column",
+        "slide_YYHp8U": {
+          "type": "slide",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": ""
+            "heading": "Overwhelmed by Stress?",
+            "sub_heading": "The relentless pace of modern life can leave us depleted, longing for moments of profound peace and mental clarity."
           }
         },
-        "column_fz3UzW": {
-          "type": "column",
+        "slide_K8g4GG": {
+          "type": "slide",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": ""
+            "heading": "Overwhelmed by Stress?",
+            "sub_heading": "The relentless pace of modern life can leave us depleted, longing for moments of profound peace and mental clarity."
           }
         },
-        "column_rkjQMr": {
-          "type": "column",
+        "slide_n78KFR": {
+          "type": "slide",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": ""
+            "heading": "Overwhelmed by Stress?",
+            "sub_heading": "The relentless pace of modern life can leave us depleted, longing for moments of profound peace and mental clarity."
           }
         }
       },
       "block_order": [
-        "column_LYy37a",
-        "column_fz3UzW",
-        "column_rkjQMr"
+        "slide_YYHp8U",
+        "slide_K8g4GG",
+        "slide_n78KFR"
       ],
+      "name": "Slider valmax",
       "settings": {
-        "title": "Multicolumn",
-        "heading_size": "h1",
-        "image_width": "full",
-        "image_ratio": "adapt",
-        "columns_desktop": 3,
-        "column_alignment": "left",
-        "background_style": "primary",
-        "button_label": "Button label",
-        "button_link": "",
-        "color_scheme": "",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
+        "heading": "The Human Need",
+        "sub_heading": "Finding Balance in a Modern World",
+        "color_background_section": "#312A27",
+        "color_background_card": "#251E1B",
         "padding_top": 36,
         "padding_bottom": 36
+      }
+    },
+    "auto_tabs_selection_valmax_CtNqbV": {
+      "type": "auto-tabs-selection-valmax",
+      "blocks": {
+        "tab_N9h8at": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Tab Title",
+            "tab_heading": "Feature Heading",
+            "tab_text": "<p>Describe the feature or service here.</p>",
+            "tab_button_label": "Learn More",
+            "tab_button_link": ""
+          }
+        },
+        "tab_ccQGcL": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Tab Title",
+            "tab_heading": "Feature Heading",
+            "tab_text": "<p>Describe the feature or service here.</p>",
+            "tab_button_label": "Learn More",
+            "tab_button_link": ""
+          }
+        },
+        "tab_cQTwYM": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Tab Title",
+            "tab_heading": "Feature Heading",
+            "tab_text": "<p>Describe the feature or service here.</p>",
+            "tab_button_label": "Learn More",
+            "tab_button_link": ""
+          }
+        },
+        "tab_NEnkfc": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Tab Title",
+            "tab_heading": "Feature Heading",
+            "tab_text": "<p>Describe the feature or service here.</p>",
+            "tab_button_label": "Learn More",
+            "tab_button_link": ""
+          }
+        },
+        "tab_QfrQNR": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Tab Title",
+            "tab_heading": "Feature Heading",
+            "tab_text": "<p>Describe the feature or service here.</p>",
+            "tab_button_label": "Learn More",
+            "tab_button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_N9h8at",
+        "tab_ccQGcL",
+        "tab_cQTwYM",
+        "tab_NEnkfc",
+        "tab_QfrQNR"
+      ],
+      "name": "Auto-switching Tabs",
+      "settings": {
+        "heading": "Intelligent Solutions for Everyday Harmony",
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     }
   },
   "order": [
     "image_banner_custom",
-    "featured_collection",
-    "multicolumn_kEiHwQ"
+    "animated_gallery_ecDaJY",
+    "slider_walmax_FfddYX",
+    "auto_tabs_selection_valmax_CtNqbV"
   ]
 }
