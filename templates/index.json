@@ -171,11 +171,11 @@
         "tab_NEnkfc": {
           "type": "tab",
           "settings": {
-            "tab_title": "Tab Title",
-            "tab_heading": "Feature Heading",
-            "tab_text": "<p>Describe the feature or service here.</p>",
-            "tab_button_label": "Learn More",
-            "tab_button_link": ""
+            "tab_title": "Fitness & Wellness",
+            "tab_heading": "Fitness & Wellness",
+            "tab_text": "<p>orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+            "tab_button_label": "Discover Wellness",
+            "tab_button_link": "#"
           }
         },
         "tab_QfrQNR": {
