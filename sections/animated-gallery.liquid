@@ -1,0 +1,348 @@
+<div class="page-width section-{{ section.id }}-padding scroll-gallery-scroll-section">
+  <div class="scroll-gallery-container">
+
+    <div class="scroll-gallery-text-content">
+      <h1 class="scroll-gallery-title">{{ section.settings.title }}</h1>
+      <p class="scroll-gallery-description">
+        {{ section.settings.sub_title }}
+      </p>
+    </div>
+
+
+    <div class="scroll-gallery">
+      {% for block in section.blocks %}
+        <div class="scroll-gallery--item scroll-gallery--item-{{ forloop.index }}">
+          {% if block.settings.image != blank %}
+            {{
+            block.settings.image
+            | image_url: width: 800
+            | image_tag:
+            loading: 'lazy',
+            class: 'scroll-gallery--image'
+            }}
+          {% else %}
+            <div class="scroll-gallery-placeholder">
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+<style>
+  .scroll-gallery-scroll-section{
+    height: 800px;
+  }
+
+  .scroll-gallery-text-content{
+    margin: 0 auto;
+  }
+
+  .scroll-gallery-title {
+    font-weight: 500;
+    font-size: 50px;
+    line-height: 120%;
+    letter-spacing: -2%;
+    text-align: center;
+    text-transform: capitalize;
+  }
+
+  .scroll-gallery-description {
+    font-weight: 400;
+    font-style: Normal;
+    font-size: 16px;
+    line-height: 140%;
+    letter-spacing: -1%;
+    text-align: center;
+    width: 515px;
+    margin: 0 auto;
+  }
+
+  .scroll-gallery{
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+    position: relative;
+    margin-top: 80px;
+  }
+
+  .scroll-gallery--item{
+    width: 250px;
+    height: 240px;
+    border: 1px solid black;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 15px solid #E5E5E5;
+  }
+
+  .scroll-gallery--image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /*.scroll-gallery-placeholder {*/
+  /*  width: 100%;*/
+  /*  height: 100%;*/
+  /*  background: #f5f5f5;*/
+  /*  display: flex;*/
+  /*  align-items: center;*/
+  /*  justify-content: center;*/
+  /*}*/
+
+  .scroll-gallery--item-3{
+    width: 440px;
+    height: 426px;
+    background-color: rgba(255, 0, 0, 0.5);
+    z-index: 3;
+  }
+
+  .scroll-gallery--item-1,
+  .scroll-gallery--item-5{
+    width: 150px;
+    height: 140px;
+  }
+
+  .scroll-gallery--item-1{
+    left: 20%;
+    top: 100px;
+    background-color: rgba(0, 0, 255, 0.5);
+    z-index: 1;
+  }
+
+  .scroll-gallery--item-2{
+    left: 35%;
+    top: 50px;
+    background-color: rgba(0, 128, 0, 0.5);
+    z-index: 2;
+  }
+
+  .scroll-gallery--item-4{
+    left: 65%;
+    top: 50px;
+    background-color: rgba(0, 128, 0, 0.5);
+    z-index: 2;
+  }
+
+  .scroll-gallery--item-5{
+    left: 80%;
+    top: 100px;
+    background-color: rgba(0, 0, 255, 0.5);
+    z-index: 1;
+  }
+
+  .scroll-gallery.final-state {
+    gap: 15px;
+  }
+
+  .scroll-gallery.final-state .scroll-gallery--item {
+    position: relative;
+    top: 0 !important;
+    left: 0 !important;
+    transform: translateX(0) !important;
+    width: 248px !important;
+    height: 240px !important;
+  }
+</style>
+
+{% style %}
+  .slider__valmax{
+    background-color: {{ section.settings.color_background_section }};
+  }
+
+  .slider__valmax-wrapper-slide{
+    background-color: {{ section.settings.color_background_card }};
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{% endstyle %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const section = document.querySelector('.scroll-gallery-scroll-section');
+    const gallery = document.querySelector('.scroll-gallery');
+    const items = document.querySelectorAll('.scroll-gallery--item');
+
+    if (!section) return;
+
+    const itemStates = {
+      1: { start: { left: '20%', top: '100px', width: 248, height: 240 }, end: { left: 0, top: 0, width: 248, height: 240 } },
+      2: { start: { left: '35%', top: '30px', width: 377, height: 365 }, end: { left: 0, top: 0, width: 248, height: 240 } },
+      3: { start: { left: '50%', top: '0px', width: 440, height: 426 }, end: { left: 0, top: 0, width: 248, height: 240 } },
+      4: { start: { left: '65%', top: '30px', width: 377, height: 365 }, end: { left: 0, top: 0, width: 248, height: 240 } },
+      5: { start: { left: '80%', top: '100px', width: 248, height: 240 }, end: { left: 0, top: 0, width: 248, height: 240 } }
+    };
+
+    function updateGalleryAnimation(progress) {
+
+      items.forEach((item, index) => {
+        const itemNumber = index + 1;
+        const state = itemStates[itemNumber];
+
+        if (state) {
+
+          const currentLeft = progress === 1 ? state.end.left : state.start.left;
+          const currentTop = progress === 1 ? state.end.top : `calc(${state.start.top} + (0px - ${state.start.top}) * ${progress})`;
+          const currentWidth = state.start.width + (state.end.width - state.start.width) * progress;
+          const currentHeight = state.start.height + (state.end.height - state.start.height) * progress;
+
+          item.style.left = currentLeft;
+          item.style.top = currentTop;
+          item.style.width = currentWidth + 'px';
+          item.style.height = currentHeight + 'px';
+
+          if (progress === 1) {
+            item.style.position = 'relative';
+          } else {
+            item.style.position = 'absolute';
+          }
+        }
+      });
+
+      if (progress === 1) {
+        gallery.classList.add('final-state');
+      } else {
+        gallery.classList.remove('final-state');
+      }
+    }
+
+    let isAnimating = false;
+
+    function handleScroll() {
+      if (isAnimating) return;
+
+      isAnimating = true;
+
+      const sectionRect = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      const triggerPoint = windowHeight * 0.4;
+      const startAnimation = triggerPoint;
+      const endAnimation = windowHeight * 0.2;
+
+      let progress = 0;
+
+      if (sectionRect.top < startAnimation && sectionRect.bottom > endAnimation) {
+        progress = 1 - (sectionRect.top - endAnimation) / (startAnimation - endAnimation);
+        progress = Math.max(0, Math.min(1, progress));
+      } else if (sectionRect.top <= endAnimation) {
+        progress = 1;
+      }
+
+      updateGalleryAnimation(progress);
+
+      isAnimating = false;
+    }
+
+    let scrollTimeout;
+    function throttledScroll() {
+      if (!scrollTimeout) {
+        scrollTimeout = setTimeout(function() {
+          handleScroll();
+          scrollTimeout = null;
+        }, 16);
+      }
+    }
+
+    window.addEventListener('scroll', throttledScroll);
+    window.addEventListener('resize', throttledScroll);
+
+    updateGalleryAnimation(0);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Scroll Gallery",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Norkaya Is More Than Just Hydrotherapy"
+    },
+    {
+      "type": "text",
+      "id": "sub_title",
+      "label": "Description",
+      "default": "Our journey is just beginning, and we will continue to innovate. Integrating wellness concepts into every facet of your life—from the water you immerse in to the spaces you inhabit."
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Gallery Image",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scroll Gallery",
+      "category": "Custom Sections",
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

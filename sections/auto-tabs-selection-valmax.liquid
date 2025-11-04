@@ -1,0 +1,417 @@
+<div class="page-width auto-tabs-section section-{{ section.id }}-padding" data-section-id="{{ section.id }}" data-autoplay-speed="5000">
+
+  <div class="section-header">
+    <h2>{{ section.settings.heading | escape }}</h2>
+  </div>
+
+  <div class="auto-tabs-container">
+
+    <div class="auto-tabs__nav" role="tablist">
+      {%- for block in section.blocks -%}
+        <button class="auto-tabs__button {% if forloop.first %}active{% endif %}"
+                role="tab"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                aria-controls="tab-panel-{{ section.id }}-{{ forloop.index }}"
+                id="tab-button-{{ section.id }}-{{ forloop.index }}"
+                data-tab-index="{{ forloop.index0 }}">
+          {{ block.settings.tab_title | escape }}
+        </button>
+      {%- endfor -%}
+    </div>
+
+
+    <div class="auto-tabs__content">
+      {%- for block in section.blocks -%}
+        <div class="auto-tabs__panel {% if forloop.first %}active{% endif %}"
+             role="tabpanel"
+             id="tab-panel-{{ section.id }}-{{ forloop.index }}"
+             aria-labelledby="tab-button-{{ section.id }}-{{ forloop.index }}"
+             {% unless forloop.first %}hidden{% endunless %}>
+
+          <div class="tab-panel-inner">
+            {% if block.settings.tab_image != blank %}
+              <div class="tab-panel__image">
+                <img src="{{ block.settings.tab_image | img_url: '600x' }}" alt="{{ block.settings.tab_image.alt | escape }}">
+              </div>
+            {% endif %}
+            <div class="tab-panel__text">
+              <h3>{{ block.settings.tab_heading | escape }}</h3>
+              <div class="rte">{{ block.settings.tab_text }}</div>
+              {% if block.settings.tab_button_label != blank and block.settings.tab_button_link != blank %}
+                <a href="{{ block.settings.tab_button_link }}" class="button">
+                  {{ block.settings.tab_button_label | escape }}
+                </a>
+              {% endif %}
+            </div>
+          </div>
+
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+
+{% style %}
+  .slider__valmax{
+    background-color: {{ section.settings.color_background_section }};
+  }
+
+  .slider__valmax-wrapper-slide{
+    background-color: {{ section.settings.color_background_card }};
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{% endstyle %}
+
+<style>
+
+  .auto-tabs__panel {
+    padding: 40px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .auto-tabs__panel.active {
+    opacity: 1;
+    position: relative;
+  }
+
+  .auto-tabs__panel[hidden] {
+    display: none;
+  }
+
+  .auto-tabs__content {
+    background-color: #ffffff;
+    position: relative;
+    min-height: 300px;
+  }
+
+
+  .auto-tabs-section {
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .auto-tabs-container {
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .auto-tabs__nav {
+    display: flex;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #e1e1e1;
+  }
+
+  .auto-tabs__button {
+    flex: 1;
+    padding: 16px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .auto-tabs__button:hover {
+    background-color: #f0f0f0;
+  }
+
+  .auto-tabs__button.active {
+    background-color: #ffffff;
+    color: #d32f2f;
+    font-weight: bold;
+  }
+
+  .auto-tabs__button.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #d32f2f;
+  }
+
+  .tab-panel-inner {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .tab-panel__image {
+    flex: 0 0 40%;
+  }
+
+  .tab-panel__image img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+
+  .tab-panel__text {
+    flex: 1;
+  }
+
+  .tab-panel__text h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+
+  .tab-panel__text .button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    background-color: #d32f2f;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+
+  .tab-panel__text .button:hover {
+    background-color: #b71c1c;
+  }
+
+  @media (max-width: 768px) {
+    .tab-panel-inner {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .tab-panel__image {
+      flex: 0 0 auto;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .auto-tabs__nav {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+
+    const autoplayIntervals = {};
+
+    initAllAutoTabs();
+
+    function initAllAutoTabs() {
+      const sections = document.querySelectorAll('.auto-tabs-section');
+
+      sections.forEach(section => {
+        initAutoTabsSection(section);
+      });
+    }
+
+    function initAutoTabsSection(section) {
+      const sectionId = section.dataset.sectionId;
+      const tabsContainer = section.querySelector('.auto-tabs-container');
+      const tabButtons = section.querySelectorAll('.auto-tabs__button');
+      const tabPanels = section.querySelectorAll('.auto-tabs__panel');
+      const autoplaySpeed = parseInt(tabsContainer.dataset.autoplaySpeed) || 5000;
+
+      let currentTabIndex = 0;
+      let isPaused = false;
+
+      function stopAutoplay() {
+        if (autoplayIntervals[sectionId]) {
+          clearInterval(autoplayIntervals[sectionId]);
+          autoplayIntervals[sectionId] = null;
+        }
+      }
+
+      function startAutoplay() {
+        stopAutoplay();
+
+        autoplayIntervals[sectionId] = setInterval(function() {
+          if (!isPaused) {
+            nextTab();
+          }
+        }, autoplaySpeed);
+      }
+
+      function switchToTab(newIndex) {
+
+        if (newIndex === currentTabIndex) return;
+
+
+        tabPanels.forEach(function(panel) {
+          panel.classList.remove('active');
+          panel.setAttribute('hidden', '');
+        });
+
+        tabButtons.forEach(function(button) {
+          button.classList.remove('active');
+          button.setAttribute('aria-selected', 'false');
+        });
+
+        tabPanels[newIndex].classList.add('active');
+        tabPanels[newIndex].removeAttribute('hidden');
+
+        tabButtons[newIndex].classList.add('active');
+        tabButtons[newIndex].setAttribute('aria-selected', 'true');
+
+        currentTabIndex = newIndex;
+      }
+
+      function nextTab() {
+        const nextIndex = (currentTabIndex + 1) % tabButtons.length;
+        switchToTab(nextIndex);
+      }
+
+      function pauseAutoplay() {
+        isPaused = true;
+      }
+
+      function resumeAutoplay() {
+        isPaused = false;
+      }
+
+      tabButtons.forEach(function(button, index) {
+        button.addEventListener('click', function() {
+          switchToTab(index);
+          stopAutoplay();
+          startAutoplay();
+        });
+      });
+
+      tabsContainer.addEventListener('mouseenter', pauseAutoplay);
+      tabsContainer.addEventListener('mouseleave', resumeAutoplay);
+
+      startAutoplay();
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Auto-switching Tabs",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Intelligent Solutions for Everyday Harmony",
+      "label": "Heading"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 60
+    }
+  ],
+  "max_blocks": 5,
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_title",
+          "default": "Tab Title",
+          "label": "Tab Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "tab_image",
+          "label": "Tab Image"
+        },
+        {
+          "type": "text",
+          "id": "tab_heading",
+          "default": "Feature Heading",
+          "label": "Tab Content Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "tab_text",
+          "default": "<p>Describe the feature or service here.</p>",
+          "label": "Tab Content Text"
+        },
+        {
+          "type": "text",
+          "id": "tab_button_label",
+          "default": "Learn More",
+          "label": "Button Label"
+        },
+        {
+          "type": "url",
+          "id": "tab_button_link",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Auto-switching Tabs",
+      "category": "Custom Sections",
+      "blocks": [
+        {
+          "type": "tab"
+        },
+        {
+          "type": "tab"
+        },
+        {
+          "type": "tab"
+        },
+        {
+          "type": "tab"
+        },
+        {
+          "type": "tab"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
