@@ -140,11 +140,12 @@
         "tab_N9h8at": {
           "type": "tab",
           "settings": {
-            "tab_title": "Tab Title",
-            "tab_heading": "Feature Heading",
-            "tab_text": "<p>Describe the feature or service here.</p>",
-            "tab_button_label": "Learn More",
-            "tab_button_link": ""
+            "tab_title": "Immersive Hydro-Massage",
+            "tab_image": "shopify://shop_images/svg741.png",
+            "tab_heading": "Complete Home Sanctuary",
+            "tab_text": "<p>Transform your living space into a personal retreat. Norkaya’s complete wellness solutions combine relaxation, hydrotherapy, and design to create a sanctuary where body and mind can truly recharge.</p>",
+            "tab_button_label": "Discover Wellness",
+            "tab_button_link": "#"
           }
         },
         "tab_ccQGcL": {
