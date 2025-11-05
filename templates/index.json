@@ -41,17 +41,7 @@
         "button"
       ],
       "settings": {
-        "image": "shopify://shop_images/Background_Image.png",
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "desktop_content_alignment": "left",
-        "color_scheme": "scheme-3",
-        "image_behavior": "none",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "image": "shopify://shop_images/Background_Image.png"
       }
     },
     "animated_gallery_ecDaJY": {
@@ -97,6 +87,7 @@
       ],
       "name": "Scroll Gallery",
       "settings": {
+        "body_bg": "#faf7f1",
         "title": "Norkaya Is More Than Just Hydrotherapy",
         "sub_title": "Our journey is just beginning, and we will continue to innovate. Integrating wellness concepts into every facet of your life—from the water you immerse in to the spaces you inhabit.",
         "padding_top": 60,
@@ -152,6 +143,7 @@
           "settings": {
             "tab_title": "Immersive Hydro-Massage",
             "tab_image": "shopify://shop_images/svg741.png",
+            "bg_image": "shopify://shop_images/33edffafed6207c31c0a0f3850d725447925cae6.png",
             "tab_heading": "Complete Home Sanctuary",
             "tab_text": "<p>Transform your living space into a personal retreat. Norkaya’s complete wellness solutions combine relaxation, hydrotherapy, and design to create a sanctuary where body and mind can truly recharge.</p>",
             "tab_button_label": "Discover Wellness",
@@ -193,6 +185,7 @@
           "settings": {
             "tab_title": "Complete Home Sanctuary",
             "tab_image": "shopify://shop_images/svg1398.png",
+            "bg_image": "shopify://shop_images/a85b31b1ab0cd7538f90aeac5f7cda8862e02ac0.jpg",
             "tab_heading": "Complete Home Sanctuary",
             "tab_text": "<p>Transform your living space into a personal retreat. Norkaya’s complete wellness solutions combine relaxation, hydrotherapy, and design to create a sanctuary where body and mind can truly recharge.</p>",
             "tab_button_label": "Discover Wellness",
