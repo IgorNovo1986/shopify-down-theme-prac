@@ -1,52 +1,54 @@
-<div class="page-width section-{{ section.id }}-padding slider__valmax">
+<div class="scroll-gallery-section" style="background-color: {{ section.settings.color_background_card }};">
 
-  <div>
-    <div class="">
-      <h1 class="title">{{ section.settings.heading }}</h1>
-      <p class="">{{ section.settings.sub_heading }}</p>
-    </div>
+  <div class="page-width section-{{ section.id }}-padding slider__valmax">
 
-    <div class="slider__valmax-wrapper-slide">
-      {% for block in section.blocks %}
-        {% if block.type == 'slide' %}
-          <div class="slider__valmax-slide">
+    <div style="position: relative">
+      <div class="">
+        <p>{{ section.settings.heading }}</p>
+        <h1 class="title">{{ section.settings.sub_heading }}</h1>
+      </div>
 
-            <div class="slider__valmax-slide-content">
+      <div class="slider__valmax-wrapper-slide">
+        {% for block in section.blocks %}
+          {% if block.type == 'slide' %}
+            <div class="slider__valmax-slide">
 
-              <span>{{ forloop.index }} of {{ forloop.length }} / {{ block.settings.heading }}</span>
+              <div class="slider__valmax-slide-content">
 
-              <div>
-                <h2 class="title">{{ block.settings.heading }}</h2>
-                <p>{{ block.settings.sub_heading }}</p>
+                <span>{{ forloop.index }} of {{ forloop.length }} / {{ block.settings.heading }}</span>
+
+                <div>
+                  <h2 class="title">{{ block.settings.heading }}</h2>
+                  <p>{{ block.settings.sub_heading }}</p>
+                </div>
+              </div>
+
+              <div class="slider__valmax-slide-img">
+                <div class="slider__valmax-slide-wrapper-img">
+                  {% if block.settings.image != blank %}
+                    {{
+                    block.settings.image
+                    | image_url: width: 800
+                    | image_tag:
+                    loading: 'lazy',
+                    class: 'slider__valmax-img'
+                    }}
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                </div>
               </div>
             </div>
-
-            <div class="slider__valmax-slide-img">
-              <div class="slider__valmax-slide-wrapper-img">
-                {% if block.settings.image != blank %}
-                  {{
-                  block.settings.image
-                  | image_url: width: 800
-                  | image_tag:
-                  loading: 'lazy',
-                  class: 'slider__valmax-img'
-                  }}
-                {% else %}
-                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                {% endif %}
-              </div>
-            </div>
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
-    <div class="slider__valmax-slide-btn">
-      <button class="prev"> {% render 'icon-arrow' %} </button>
-      <button class="next"> {% render 'icon-arrow' %} </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="slider__valmax-slide-btn">
+        <button class="prev"> {% render 'icon-arrow' %} </button>
+        <button class="next"> {% render 'icon-arrow' %} </button>
+      </div>
     </div>
   </div>
 </div>
-
 
 <style>
 
@@ -70,12 +72,20 @@
     width: 50%;
   }
 
+  @media screen and (max-width: 992px) {
+    .slider__valmax-slide-content,
+    .slider__valmax-slide-img {
+      width: 100%;
+    }
+  }
+
   .slider__valmax-slide-wrapper-img{
     height: 476px;
   }
 
   .slider__valmax-slide-wrapper-img svg{
     height: 476px;
+    width: 100%;
   }
 
   .slider__valmax-img{
@@ -97,9 +107,14 @@
   .slider__valmax-slide {
     display: flex;
     width: 100%;
-    align-items: center;
     justify-content: space-between;
     gap: 40px;
+  }
+
+  @media screen and (max-width: 992px) {
+    .slider__valmax-slide{
+      flex-direction: column;
+    }
   }
 
   .slider__valmax-slide-btn button{
@@ -109,6 +124,12 @@
     background-color: transparent;
     border: 1px solid #FAF7F1;
     cursor: pointer;
+  }
+
+  .slider__valmax-slide-btn {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
   }
 
   .slider__valmax-slide-btn .prev svg{
@@ -121,20 +142,11 @@
     width: 100%;
   }
 
-  .slider__valmax-slide {
-    flex: 0 0 100%;
-    width: 100%;
-    min-width: 100%;
-  }
 </style>
 
 {% style %}
-  .slider__valmax{
-    background-color: {{ section.settings.color_background_section }};
-  }
-
   .slider__valmax-wrapper-slide{
-    background-color: {{ section.settings.color_background_card }};
+    background-color: {{ section.settings.color_background_section }};
   }
 
   .section-{{ section.id }}-padding {

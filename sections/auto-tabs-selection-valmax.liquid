@@ -1,11 +1,19 @@
-<div class="page-width auto-tabs-section section-{{ section.id }}-padding" data-section-id="{{ section.id }}" data-autoplay-speed="5000">
+<div class="auto-tabs-section section-{{ section.id }}-padding" data-section-id="{{ section.id }}" data-autoplay-speed="5000">
 
-  <div class="section-header">
-    <h2>{{ section.settings.heading | escape }}</h2>
+  <div class="auto-tabs-header">
+    <h1 class="auto-tabs-section-title">{{ section.settings.heading | escape }}</h1>
   </div>
 
-  <div class="auto-tabs-container">
+  <div class="tab-backgrounds">
+    {%- for block in section.blocks -%}
+      <div class="tab-bg-image {% if forloop.first %}active{% endif %}"
+           data-tab-index="{{ forloop.index0 }}"
+           style="background-image: url('{{ block.settings.bg_image | img_url: '2000x' }}');">
+      </div>
+    {%- endfor -%}
+  </div>
 
+  <div class="auto-tabs-container page-width">
     <div class="auto-tabs__nav" role="tablist">
       {%- for block in section.blocks -%}
         <button class="auto-tabs__button {% if forloop.first %}active{% endif %}"
@@ -33,13 +41,17 @@
               <div class="tab-panel__image">
                 <img src="{{ block.settings.tab_image | img_url: '600x' }}" alt="{{ block.settings.tab_image.alt | escape }}">
               </div>
+            {% else %}
+              <div class="tab-panel__image">
+                QQQ
+              </div>
             {% endif %}
             <div class="tab-panel__text">
-              <h3>{{ block.settings.tab_heading | escape }}</h3>
+              <p>{{ block.settings.tab_heading | escape }}</p>
               <div class="rte">{{ block.settings.tab_text }}</div>
               {% if block.settings.tab_button_label != blank and block.settings.tab_button_link != blank %}
-                <a href="{{ block.settings.tab_button_link }}" class="button">
-                  {{ block.settings.tab_button_label | escape }}
+                <a href="{{ block.settings.tab_button_link }}" class="button-custom">
+                  {{ block.settings.tab_button_label | escape }} {% render 'icon-arrow' %}
                 </a>
               {% endif %}
             </div>
@@ -77,6 +89,15 @@
 
 <style>
 
+  .auto-tabs-section-title{
+    font-weight: 500;
+    font-size: 50px;
+    line-height: 120%;
+    letter-spacing: -2%;
+    text-align: center;
+    text-transform: capitalize;
+  }
+
   .auto-tabs__panel {
     padding: 40px;
     opacity: 0;
@@ -98,78 +119,101 @@
   }
 
   .auto-tabs__content {
-    background-color: #ffffff;
     position: relative;
     min-height: 300px;
   }
 
 
   .auto-tabs-section {
+    position: relative; /* Важно! */
+    min-height: 600px; /* Минимальная высота секции */
   }
 
-  .section-header {
+  .auto-tabs-header {
     text-align: center;
     margin-bottom: 40px;
   }
 
   .auto-tabs-container {
-    border: 1px solid #e1e1e1;
     border-radius: 8px;
     overflow: hidden;
+    position: relative; /* Важно! */
+    z-index: 2; /* Контент над фоном */
+    padding-top: 60px;
   }
 
   .auto-tabs__nav {
     display: flex;
-    background-color: #f9f9f9;
-    border-bottom: 1px solid #e1e1e1;
+    border: 1px solid #e1e1e1;
+    color: #FAF7F1;
+    border-radius: 30px;
+    backdrop-filter: blur(10px); /* Размытие фона behind элемента */
+    -webkit-backdrop-filter: blur(10px); /* Для Safari */
   }
 
   .auto-tabs__button {
     flex: 1;
-    padding: 16px 20px;
+    padding: 6px 20px;
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     transition: all 0.3s ease;
     position: relative;
+    border-radius: 30px;
+    text-transform: uppercase;
+    color: #e1e1e1;
   }
 
   .auto-tabs__button:hover {
-    background-color: #f0f0f0;
+    background: rgba(250, 247, 241, 0.15);
+    border-radius: 30px;
   }
 
   .auto-tabs__button.active {
     background-color: #ffffff;
-    color: #d32f2f;
+    color: #251E1B;
     font-weight: bold;
-  }
-
-  .auto-tabs__button.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: #d32f2f;
   }
 
   .tab-panel-inner {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     gap: 40px;
+    flex-direction: column;
+    width: 453px;
+    padding: 20px;
+    border: 1px solid #FCF6EC1A;
+    color: #FAF7F1;
+    backdrop-filter: blur(10px); /* Размытие фона behind элемента */
+    -webkit-backdrop-filter: blur(10px); /* Для Safari */
   }
 
   .tab-panel__image {
-    flex: 0 0 40%;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 1px solid #FCF6EC1A;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tab-panel-inner .rte {
+    margin-bottom: 30px;
   }
 
   .tab-panel__image img {
-    width: 100%;
-    height: auto;
+    width: 26px;
+    height: 26px;
     border-radius: 4px;
+  }
+
+  .tab-panel__image svg {
+    width: 26px;
+    height: 26px;
   }
 
   .tab-panel__text {
@@ -181,26 +225,7 @@
     margin-bottom: 16px;
   }
 
-  .tab-panel__text .button {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 24px;
-    background-color: #d32f2f;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-  }
-
-  .tab-panel__text .button:hover {
-    background-color: #b71c1c;
-  }
-
   @media (max-width: 768px) {
-    .tab-panel-inner {
-      flex-direction: column;
-      text-align: center;
-    }
 
     .tab-panel__image {
       flex: 0 0 auto;
@@ -212,6 +237,39 @@
     .auto-tabs__nav {
       flex-direction: column;
     }
+  }
+
+  .tab-backgrounds {
+    position: absolute;
+    /*top: 0;*/
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .tab-bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .tab-bg-image.active {
+    opacity: 1;
+  }
+
+  .auto-tabs__button p {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid #FAF7F1;
   }
 </style>
 
@@ -277,6 +335,16 @@
 
         tabButtons[newIndex].classList.add('active');
         tabButtons[newIndex].setAttribute('aria-selected', 'true');
+
+        const bgImages = section.querySelectorAll('.tab-bg-image');
+        bgImages.forEach(function(bg) {
+          bg.classList.remove('active');
+        });
+
+        const activeBg = section.querySelector(`.tab-bg-image[data-tab-index="${newIndex}"]`);
+        if (activeBg) {
+          activeBg.classList.add('active');
+        }
 
         currentTabIndex = newIndex;
       }
@@ -363,6 +431,11 @@
           "type": "image_picker",
           "id": "tab_image",
           "label": "Tab Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "bg_image",
+          "label": "BG Image"
         },
         {
           "type": "text",
