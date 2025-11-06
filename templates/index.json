@@ -10,7 +10,7 @@
 {
   "sections": {
     "image_banner_custom": {
-      "type": "image-banner-custom",
+      "type": "v-hero-section",
       "blocks": {
         "heading": {
           "type": "heading",
@@ -45,7 +45,7 @@
       }
     },
     "animated_gallery_ecDaJY": {
-      "type": "animated-gallery",
+      "type": "v-scroll-gallery",
       "blocks": {
         "image_UEj6Gd": {
           "type": "image",
@@ -90,12 +90,12 @@
         "body_bg": "#faf7f1",
         "title": "Norkaya Is More Than Just Hydrotherapy",
         "sub_title": "Our journey is just beginning, and we will continue to innovate. Integrating wellness concepts into every facet of your life—from the water you immerse in to the spaces you inhabit.",
-        "padding_top": 60,
+        "padding_top": 76,
         "padding_bottom": 60
       }
     },
     "slider_walmax_FfddYX": {
-      "type": "slider-walmax",
+      "type": "v-slider-section",
       "blocks": {
         "slide_YYHp8U": {
           "type": "slide",
@@ -130,13 +130,11 @@
         "heading": "The Human Need",
         "sub_heading": "Finding Balance in a Modern World",
         "color_background_section": "#312A27",
-        "color_background_card": "#251E1B",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "color_background_card": "#251E1B"
       }
     },
     "auto_tabs_selection_valmax_CtNqbV": {
-      "type": "auto-tabs-selection-valmax",
+      "type": "v-auto-tabs-section",
       "blocks": {
         "tab_N9h8at": {
           "type": "tab",
@@ -203,7 +201,7 @@
       "name": "Auto-switching Tabs",
       "settings": {
         "heading": "Intelligent Solutions for Everyday Harmony",
-        "padding_top": 60,
+        "padding_top": 76,
         "padding_bottom": 60
       }
     }

@@ -1,27 +1,47 @@
-<div class="auto-tabs-section section-{{ section.id }}-padding" data-section-id="{{ section.id }}" data-autoplay-speed="5000">
+<div
+  class="auto-tabs-section section-{{ section.id }}-padding"
+  data-section-id="{{ section.id }}"
+  data-autoplay-speed="5000"
+>
 
   <div class="auto-tabs-header">
-    <h1 class="auto-tabs-section-title">{{ section.settings.heading | escape }}</h1>
+    <h1 class="auto-tabs-header-title">{{ section.settings.heading | escape }}</h1>
   </div>
 
-  <div class="tab-backgrounds">
+  <div class="auto-tabs-backgrounds">
     {%- for block in section.blocks -%}
-      <div class="tab-bg-image {% if forloop.first %}active{% endif %}"
-           data-tab-index="{{ forloop.index0 }}"
-           style="background-image: url('{{ block.settings.bg_image | img_url: '2000x' }}');">
-      </div>
+      {% if block.settings.bg_image != blank %}
+        <div
+          class="auto-tabs-bg-image {% if forloop.first %}active{% endif %}"
+          data-tab-index="{{ forloop.index0 }}"
+          style="background-image: url('{{ block.settings.bg_image | img_url: '2000x' }}');"
+        >
+        </div>
+      {% else %}
+        <div
+          class="auto-tabs-bg-image {% if forloop.first %}active{% endif %}"
+          data-tab-index="{{ forloop.index0 }}"
+        >
+          {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {% endif %}
     {%- endfor -%}
   </div>
 
   <div class="auto-tabs-container page-width">
+
     <div class="auto-tabs__nav" role="tablist">
       {%- for block in section.blocks -%}
-        <button class="auto-tabs__button {% if forloop.first %}active{% endif %}"
-                role="tab"
-                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-                aria-controls="tab-panel-{{ section.id }}-{{ forloop.index }}"
-                id="tab-button-{{ section.id }}-{{ forloop.index }}"
-                data-tab-index="{{ forloop.index0 }}">
+        <button
+          class="auto-tabs__button {% if forloop.first %}active{% endif %}"
+          role="tab"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          aria-controls="tab-panel-{{ section.id }}-{{ forloop.index }}"
+          id="tab-button-{{ section.id }}-{{ forloop.index }}"
+          data-tab-index="{{ forloop.index0 }}"
+        >
+          <span class="circle" style="margin-right: 5px">⭘</span>
+          <span class="drop" style="margin-right: 5px">🌢</span>
           {{ block.settings.tab_title | escape }}
         </button>
       {%- endfor -%}
@@ -30,30 +50,36 @@
 
     <div class="auto-tabs__content">
       {%- for block in section.blocks -%}
-        <div class="auto-tabs__panel {% if forloop.first %}active{% endif %}"
-             role="tabpanel"
-             id="tab-panel-{{ section.id }}-{{ forloop.index }}"
-             aria-labelledby="tab-button-{{ section.id }}-{{ forloop.index }}"
-             {% unless forloop.first %}hidden{% endunless %}>
+        <div
+          class="auto-tabs__panel {% if forloop.first %}active{% endif %}"
+          role="tabpanel"
+          id="tab-panel-{{ section.id }}-{{ forloop.index }}"
+          aria-labelledby="tab-button-{{ section.id }}-{{ forloop.index }}"
+          {% unless forloop.first %}hidden{% endunless %}
+        >
+          <div class="auto-tabs-panel-inner">
 
-          <div class="tab-panel-inner">
             {% if block.settings.tab_image != blank %}
-              <div class="tab-panel__image">
+              <div class="auto-tabs-panel__image">
                 <img src="{{ block.settings.tab_image | img_url: '600x' }}" alt="{{ block.settings.tab_image.alt | escape }}">
               </div>
             {% else %}
-              <div class="tab-panel__image">
-                QQQ
+              <div class="auto-tabs-panel__image">
+                ✰
               </div>
             {% endif %}
-            <div class="tab-panel__text">
-              <p>{{ block.settings.tab_heading | escape }}</p>
-              <div class="rte">{{ block.settings.tab_text }}</div>
+
+            <div class="auto-tabs-panel__content">
+
+              <p class="title">{{ block.settings.tab_heading | escape }}</p>
+              <div class="description">{{ block.settings.tab_text }}</div>
+
               {% if block.settings.tab_button_label != blank and block.settings.tab_button_link != blank %}
                 <a href="{{ block.settings.tab_button_link }}" class="button-custom">
                   {{ block.settings.tab_button_label | escape }} {% render 'icon-arrow' %}
                 </a>
               {% endif %}
+
             </div>
           </div>
 
@@ -66,14 +92,6 @@
 
 
 {% style %}
-  .slider__valmax{
-    background-color: {{ section.settings.color_background_section }};
-  }
-
-  .slider__valmax-wrapper-slide{
-    background-color: {{ section.settings.color_background_card }};
-  }
-
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -89,17 +107,175 @@
 
 <style>
 
-  .auto-tabs-section-title{
+  .auto-tabs-section {
+    position: relative;
+    min-height: 600px;
+  }
+
+
+  .auto-tabs-header {
+    text-align: center;
+    /*margin-bottom: 40px;*/
+    width: 520px;
+    margin: 0 auto;
+  }
+
+  .auto-tabs-header-title{
     font-weight: 500;
     font-size: 50px;
     line-height: 120%;
     letter-spacing: -2%;
     text-align: center;
     text-transform: capitalize;
+
+    margin-bottom: 55px;
+  }
+
+
+  /*Background start*/
+
+  .auto-tabs-backgrounds {
+    position: absolute;
+    /*top: 0;*/
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .auto-tabs-bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /*height: 100%;*/
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    height: 765px;
+  }
+
+  .auto-tabs-bg-image svg {
+    height: 765px;
+    width: 100%;
+  }
+
+  .auto-tabs-bg-image.active {
+    opacity: 1;
+  }
+
+  /*Background end*/
+
+  .auto-tabs-container {
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+    padding-top: 40px;
+    padding-right: 60px;
+    padding-left: 60px;
+  }
+
+
+
+
+  /*Tab navigation start*/
+
+  .auto-tabs__nav {
+    display: flex;
+    border: 1px solid #e1e1e1;
+    color: #FAF7F1;
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  @media (max-width: 992px) {
+    .auto-tabs__nav {
+      overflow-x: scroll;
+    }
+  }
+
+  .auto-tabs__button {
+    flex: 1;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    border-radius: 30px;
+    text-transform: uppercase;
+    color: #e1e1e1;
+    white-space: nowrap;
+    padding: 15px 5px;
+  }
+
+  .auto-tabs__button:hover {
+    background: rgba(250, 247, 241, 0.15);
+    border-radius: 30px;
+    color: white;
+  }
+
+  .auto-tabs__button.active {
+    background: rgba(250, 247, 241, 0.15);
+    color: #251E1B;
+    font-weight: bold;
+  }
+
+  .drop {
+    display: none;
+  }
+
+  .auto-tabs__button.active .circle {
+    display: none;
+  }
+
+  .auto-tabs__button.active .drop {
+    display: inline;
+  }
+
+
+  .auto-tabs__button.active::before {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 2px;
+    right: 2px;
+    width: 0;
+    height: 95%;
+    background: #fff;
+    z-index: -1;
+    border-radius: 30px;
+    animation: fillBackground 5s ease;
+  }
+
+  @keyframes fillBackground {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  /*Tab navigation end*/
+
+
+  /*Tab content start*/
+
+  .auto-tabs__content {
+    position: relative;
+    min-height: 610px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
   }
 
   .auto-tabs__panel {
-    padding: 40px;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
     position: absolute;
@@ -118,79 +294,22 @@
     display: none;
   }
 
-  .auto-tabs__content {
-    position: relative;
-    min-height: 300px;
-  }
-
-
-  .auto-tabs-section {
-    position: relative; /* Важно! */
-    min-height: 600px; /* Минимальная высота секции */
-  }
-
-  .auto-tabs-header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-
-  .auto-tabs-container {
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative; /* Важно! */
-    z-index: 2; /* Контент над фоном */
-    padding-top: 60px;
-  }
-
-  .auto-tabs__nav {
-    display: flex;
-    border: 1px solid #e1e1e1;
-    color: #FAF7F1;
-    border-radius: 30px;
-    backdrop-filter: blur(10px); /* Размытие фона behind элемента */
-    -webkit-backdrop-filter: blur(10px); /* Для Safari */
-  }
-
-  .auto-tabs__button {
-    flex: 1;
-    padding: 6px 20px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    position: relative;
-    border-radius: 30px;
-    text-transform: uppercase;
-    color: #e1e1e1;
-  }
-
-  .auto-tabs__button:hover {
-    background: rgba(250, 247, 241, 0.15);
-    border-radius: 30px;
-  }
-
-  .auto-tabs__button.active {
-    background-color: #ffffff;
-    color: #251E1B;
-    font-weight: bold;
-  }
-
-  .tab-panel-inner {
+  .auto-tabs-panel-inner {
     display: flex;
     align-items: baseline;
     gap: 40px;
     flex-direction: column;
     width: 453px;
-    padding: 20px;
+    padding: 20px 25px;
     border: 1px solid #FCF6EC1A;
     color: #FAF7F1;
-    backdrop-filter: blur(10px); /* Размытие фона behind элемента */
-    -webkit-backdrop-filter: blur(10px); /* Для Safari */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(10px);
+    background-color: #251E1B80;
+    margin-left: -20px;
   }
 
-  .tab-panel__image {
+  .auto-tabs-panel__image {
     width: 72px;
     height: 72px;
     border-radius: 50%;
@@ -199,78 +318,52 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    margin-bottom: 40px;
+    margin-top: 10px;
   }
 
-  .tab-panel-inner .rte {
-    margin-bottom: 30px;
-  }
-
-  .tab-panel__image img {
-    width: 26px;
-    height: 26px;
-    border-radius: 4px;
-  }
-
-  .tab-panel__image svg {
-    width: 26px;
-    height: 26px;
-  }
-
-  .tab-panel__text {
-    flex: 1;
-  }
-
-  .tab-panel__text h3 {
-    margin-top: 0;
-    margin-bottom: 16px;
-  }
-
-  @media (max-width: 768px) {
-
-    .tab-panel__image {
+  @media (max-width: 992px) {
+    .auto-tabs-panel__image {
       flex: 0 0 auto;
       width: 100%;
       max-width: 300px;
       margin: 0 auto;
     }
-
-    .auto-tabs__nav {
-      flex-direction: column;
-    }
   }
 
-  .tab-backgrounds {
-    position: absolute;
-    /*top: 0;*/
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
+  .auto-tabs-panel__image svg {
+    width: 26px;
+    height: 26px;
   }
 
-  .tab-bg-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+  .auto-tabs-panel__content .title {
+    margin-top: 0;
+    margin-bottom: 16px;
+
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 106%;
+    letter-spacing: -2%;
+
   }
 
-  .tab-bg-image.active {
-    opacity: 1;
+  .auto-tabs-panel__content .description {
+    margin-bottom: 30px;
+    font-weight: 400;
+    font-style: Normal;
+    font-size: 16px;
+    line-height: 140%;
+    letter-spacing: -1%;
+
   }
 
-  .auto-tabs__button p {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 1px solid #FAF7F1;
+  .auto-tabs-panel__content .button-custom {
+    margin-top: 10px;
+    margin-bottom: 20px;
   }
+  /*Tab content end*/
+
 </style>
 
 <script>
@@ -336,12 +429,12 @@
         tabButtons[newIndex].classList.add('active');
         tabButtons[newIndex].setAttribute('aria-selected', 'true');
 
-        const bgImages = section.querySelectorAll('.tab-bg-image');
+        const bgImages = section.querySelectorAll('.auto-tabs-bg-image');
         bgImages.forEach(function(bg) {
           bg.classList.remove('active');
         });
 
-        const activeBg = section.querySelector(`.tab-bg-image[data-tab-index="${newIndex}"]`);
+        const activeBg = section.querySelector(`.auto-tabs-bg-image[data-tab-index="${newIndex}"]`);
         if (activeBg) {
           activeBg.classList.add('active');
         }
@@ -354,13 +447,13 @@
         switchToTab(nextIndex);
       }
 
-      function pauseAutoplay() {
-        isPaused = true;
-      }
-
-      function resumeAutoplay() {
-        isPaused = false;
-      }
+      // function pauseAutoplay() {
+      //   isPaused = true;
+      // }
+      //
+      // function resumeAutoplay() {
+      //   isPaused = false;
+      // }
 
       tabButtons.forEach(function(button, index) {
         button.addEventListener('click', function() {
@@ -370,8 +463,8 @@
         });
       });
 
-      tabsContainer.addEventListener('mouseenter', pauseAutoplay);
-      tabsContainer.addEventListener('mouseleave', resumeAutoplay);
+      // tabsContainer.addEventListener('mouseenter', pauseAutoplay);
+      // tabsContainer.addEventListener('mouseleave', resumeAutoplay);
 
       startAutoplay();
     }
@@ -380,7 +473,7 @@
 
 {% schema %}
 {
-  "name": "Auto-switching Tabs",
+  "name": "V-Auto Tabs Section",
   "tag": "section",
   "class": "section",
   "settings": [
@@ -402,7 +495,7 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_top",
-      "default": 60
+      "default": 76
     },
     {
       "type": "range",
@@ -465,8 +558,8 @@
   ],
   "presets": [
     {
-      "name": "Auto-switching Tabs",
-      "category": "Custom Sections",
+      "name": "V-Auto Tabs Section",
+      "category": "Custom Sections (valmax)",
       "blocks": [
         {
           "type": "tab"

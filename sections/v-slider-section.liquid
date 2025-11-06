@@ -1,110 +1,107 @@
-<div class="scroll-gallery-section" style="background-color: {{ section.settings.color_background_card }};">
 
-  <div class="page-width section-{{ section.id }}-padding slider__valmax">
+<div style="background-color: {{ section.settings.color_background_card }};">
 
-    <div style="position: relative">
-      <div class="">
-        <p>{{ section.settings.heading }}</p>
+  <div class="slider__section page-width">
+
+      <div class="slider__section-content">
+        <p class="description">{{ section.settings.heading }}</p>
         <h1 class="title">{{ section.settings.sub_heading }}</h1>
       </div>
 
-      <div class="slider__valmax-wrapper-slide">
+      <div class="slider__section-wrapper-slide">
         {% for block in section.blocks %}
           {% if block.type == 'slide' %}
-            <div class="slider__valmax-slide">
 
-              <div class="slider__valmax-slide-content">
+            <div class="slider__section-slide">
 
+              <div class="slider__section-slide-content">
                 <span>{{ forloop.index }} of {{ forloop.length }} / {{ block.settings.heading }}</span>
 
                 <div>
                   <h2 class="title">{{ block.settings.heading }}</h2>
-                  <p>{{ block.settings.sub_heading }}</p>
+                  <p class="description">{{ block.settings.sub_heading }}</p>
                 </div>
               </div>
 
-              <div class="slider__valmax-slide-img">
-                <div class="slider__valmax-slide-wrapper-img">
+              <div class="slider__section-slide-img">
+                <div class="slider__section-slide-wrapper-img">
                   {% if block.settings.image != blank %}
                     {{
                     block.settings.image
                     | image_url: width: 800
                     | image_tag:
                     loading: 'lazy',
-                    class: 'slider__valmax-img'
+                    class: 'slider__section-img'
                     }}
                   {% else %}
                     {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                   {% endif %}
                 </div>
               </div>
+
             </div>
+
           {% endif %}
         {% endfor %}
       </div>
-      <div class="slider__valmax-slide-btn">
+
+      <div class="slider__section-slide-btn">
         <button class="prev"> {% render 'icon-arrow' %} </button>
         <button class="next"> {% render 'icon-arrow' %} </button>
       </div>
+
     </div>
-  </div>
 </div>
 
 <style>
 
-  .slider__valmax{
+  .slider__section{
     color: #FAF7F1;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+
+    padding-top: 76px;
+    padding-bottom: 108px;
   }
 
-  .slider__valmax .title{
-    color: #FAF7F1;
+  .slider__section-content {
+    width: 475px;
   }
 
-  .slider__valmax-wrapper-slide {
+  .slider__section-content .description {
+    font-weight: 400;
+    font-style: Normal;
+    font-size: 25px;
+    line-height: 120%;
+    letter-spacing: -2%;
+    color: #FAF7F1;
+
+    margin-top: 35px;
+  }
+
+  .slider__section-content .title{
+    font-weight: 500;
+    font-size: 50px;
+    line-height: 120%;
+    letter-spacing: -2%;
+    color: #FAF7F1;
+
+    margin-top: 25px;
+    margin-bottom: 55px;
+  }
+
+  .slider__section-wrapper-slide {
     position: relative;
     overflow: hidden;
     width: 100%;
     padding: 28px;
+    display: flex;
+    transition: transform 0.3s ease-in-out;
   }
 
-  .slider__valmax-slide-content,
-  .slider__valmax-slide-img {
-    width: 50%;
-  }
-
-  @media screen and (max-width: 992px) {
-    .slider__valmax-slide-content,
-    .slider__valmax-slide-img {
-      width: 100%;
-    }
-  }
-
-  .slider__valmax-slide-wrapper-img{
-    height: 476px;
-  }
-
-  .slider__valmax-slide-wrapper-img svg{
-    height: 476px;
-    width: 100%;
-  }
-
-  .slider__valmax-img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .slider__valmax-slide-img svg,
-  .slider__valmax-slide-btn button svg {
-    stroke: #FAF7F1;
-  }
-
-  .slider__valmax-slide-img svg {
-    border: 1px solid #FAF7F1;
-  }
-
-  .slider__valmax-slide {
+  .slider__section-slide {
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -112,12 +109,81 @@
   }
 
   @media screen and (max-width: 992px) {
-    .slider__valmax-slide{
+    .slider__section-slide{
       flex-direction: column;
     }
   }
 
-  .slider__valmax-slide-btn button{
+  .slider__section-slide-content span {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 106%;
+  }
+
+  .slider__section-slide-content div {
+    max-width: 435px;
+  }
+
+
+  .slider__section-slide-content div h2 {
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 120%;
+    color: #FAF7F1;
+  }
+
+  .slider__section-slide-content div p {
+    font-weight: 400;
+    font-style: Normal;
+    font-size: 18px;
+    line-height: 140%;
+    margin: -10px 0;
+  }
+
+  .slider__section-slide-content,
+  .slider__section-slide-img {
+    width: 50%;
+  }
+
+  @media screen and (max-width: 992px) {
+    .slider__section-slide-content,
+    .slider__section-slide-img {
+      width: 100%;
+    }
+  }
+
+  .slider__section-slide-wrapper-img{
+    height: 476px;
+  }
+
+  .slider__section-slide-wrapper-img svg{
+    height: 476px;
+    width: 100%;
+  }
+
+  .slider__section-img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .slider__section-slide-img svg,
+  .slider__section-slide-btn button svg {
+    stroke: #FAF7F1;
+  }
+
+  .slider__section-slide-img svg {
+    border: 1px solid #FAF7F1;
+  }
+
+  .slider__section-slide-btn {
+    position: absolute;
+    bottom: 135px;
+    left: 70px;
+  }
+
+  .slider__section-slide-btn button{
     border-radius: 50%;
     width: 44px;
     height: 44px;
@@ -126,48 +192,25 @@
     cursor: pointer;
   }
 
-  .slider__valmax-slide-btn {
-    position: absolute;
-    bottom: 25px;
-    left: 25px;
-  }
-
-  .slider__valmax-slide-btn .prev svg{
+  .slider__section-slide-btn .prev svg{
     rotate: 180deg;
-  }
-
-  .slider__valmax-wrapper-slide {
-    display: flex;
-    transition: transform 0.3s ease-in-out;
-    width: 100%;
   }
 
 </style>
 
 {% style %}
-  .slider__valmax-wrapper-slide{
+  .slider__section-wrapper-slide{
     background-color: {{ section.settings.color_background_section }};
-  }
-
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
-
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
   }
 {% endstyle %}
 
+
 <script>
   function initSliderValmax() {
-    const slider = document.querySelector('.slider__valmax-wrapper-slide');
-    const slides = document.querySelectorAll('.slider__valmax-slide');
-    const prevBtn = document.querySelector('.slider__valmax-slide-btn .prev');
-    const nextBtn = document.querySelector('.slider__valmax-slide-btn .next');
+    const slider = document.querySelector('.slider__section-wrapper-slide');
+    const slides = document.querySelectorAll('.slider__section-slide');
+    const prevBtn = document.querySelector('.slider__section-slide-btn .prev');
+    const nextBtn = document.querySelector('.slider__section-slide-btn .next');
 
     let currentIndex = 0;
     let isAnimating = false;
@@ -290,9 +333,10 @@
   document.addEventListener('DOMContentLoaded', initSliderValmax);
 </script>
 
+
 {% schema %}
 {
-  "name": "Slider valmax",
+  "name": "V-Slider Section",
   "settings": [
     {
       "type": "text",
@@ -317,30 +361,6 @@
       "id": "color_background_card",
       "label": "Background card",
       "default": "#251E1B"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.all.padding.section_padding_heading"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_top",
-      "default": 36
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_bottom",
-      "default": 36
     }
   ],
   "blocks": [
@@ -370,8 +390,8 @@
   ],
   "presets": [
     {
-      "name": "Slider valmax",
-      "category": "Custom Sections",
+      "name": "V-Slider Section",
+      "category": "Custom Sections (valmax)",
       "blocks": [
         {
           "type": "slide"

@@ -1,19 +1,19 @@
-<div class="banner-section">
+<div class="v-hero-section">
+
   {%- if section.settings.image != blank -%}
-    <div class="banner-backgrounds">
-      <div class="banner-bg-image"
+    <div class="v-hero-background">
+      <div class="v-hero-bg-image"
            style="background-image: url('{{  section.settings.image | img_url: '2000x' }}'); opacity: 1;">
       </div>
     </div>
   {%- else -%}
-    <div class="banner-backgrounds">
+    <div class="v-hero-background">
       {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
     </div>
   {%- endif -%}
 
-  <div class="page-width banner-content-custom__wrapper">
-    <div class="banner-content-custom">
-      <div class="banner-content-custom__content">
+  <div class="v-hero-content-wrapper page-width">
+      <div class="v-hero-content">
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'heading' -%}
@@ -44,44 +44,17 @@
           </a>
         {% endif %}
       {% endfor %}
-    </div>
   </div>
+
 </div>
 
 <style>
-  .banner-section {
+  .v-hero-section {
     position: relative;
-    min-height: 500px;
+    min-height: 765px;
   }
 
-  .banner-content-custom__wrapper{
-    display: flex;
-    position: relative;
-    z-index: 2;
-    min-height: 475px;
-  }
-
-  .banner-content-custom{
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    color: #FAF7F1;
-    width: 100%;
-  }
-
-  .banner-content-custom h2 {
-    color: #FAF7F1;
-    margin: 0;
-  }
-
-  .banner-content-custom__content{
-    display: flex;
-    flex-direction: column-reverse;
-    width: 500px;
-  }
-
-  .banner-backgrounds {
+  .v-hero-background {
     position: absolute;
     top: 0;
     left: 0;
@@ -90,13 +63,7 @@
     z-index: 1;
   }
 
-  .banner-backgrounds svg{
-    min-height: 500px;
-    max-height: 500px;
-    width: 100%;
-  }
-
-  .banner-bg-image {
+  .v-hero-bg-image {
     position: absolute;
     top: 0;
     left: 0;
@@ -107,11 +74,57 @@
     background-repeat: no-repeat;
     opacity: 1;
   }
+
+  .v-hero-background svg{
+    min-height: 765px;
+    max-height: 765px;
+    width: 100%;
+  }
+
+  .v-hero-content-wrapper{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    min-height: 715px;
+    width: 100%;
+
+    position: relative;
+    z-index: 2;
+
+    color: #FAF7F1;
+  }
+
+  .v-hero-content{
+    display: flex;
+    flex-direction: column-reverse;
+    width: 630px;
+  }
+
+  .v-hero-content h2 {
+    color: #FAF7F1;
+    margin: 0;
+    font-weight: 500;
+    font-size: 72px;
+    line-height: 113.99999999999999%;
+    letter-spacing: -3%;
+  }
+
+  .v-hero-content p {
+    font-weight: 400;
+    font-style: Normal;
+    font-size: 24px;
+    line-height: 120%;
+    letter-spacing: -2%;
+    margin-bottom: 25px !important;
+  }
+
 </style>
 
 {% schema %}
 {
-  "name": "Image banner custom",
+  "name": "V-Hero Section",
   "tag": "section",
   "class": "section",
   "disabled_on": {
@@ -227,8 +240,8 @@
   ],
   "presets": [
     {
-      "name": "Image banner custom",
-      "category": "Custom Sections",
+      "name": "V-Hero Section",
+      "category": "Custom Sections (valmax)",
       "blocks": [
         {
           "type": "heading"

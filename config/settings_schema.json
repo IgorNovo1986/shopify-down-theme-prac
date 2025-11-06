@@ -35,6 +35,12 @@
         "type": "image_picker",
         "id": "body_bg",
         "label": "Body bg"
+      },
+      {
+        "type": "checkbox",
+        "id": "valmax",
+        "label": "Show valmax style header",
+        "default": true
       }
     ]
   },

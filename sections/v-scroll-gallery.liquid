@@ -1,84 +1,48 @@
 
-{% comment %}<div class="scroll-gallery-section" style="background-color: {{ section.settings.body_bg }};">{% endcomment %}
-  {% comment %}{%- if section.settings.body_img != blank -%}{% endcomment %}
-    {% comment %}<div class="scroll-gallery-backgrounds">{% endcomment %}
-      {% comment %}<div class="scroll-gallery-bg-image"{% endcomment %}
-           {% comment %}style="background-image: url('{{ section.settings.body_img | img_url: '2000x' }}');">{% endcomment %}
-      {% comment %}</div>{% endcomment %}
-    {% comment %}</div>{% endcomment %}
-  {% comment %}{%- endif -%}{% endcomment %}
+<div class="v-scroll-gallery-section    page-width section-{{ section.id }}-padding">
 
-  <div class="page-width section-{{ section.id }}-padding scroll-gallery-scroll-section">
-    <div class="scroll-gallery-container">
+    <div class="v-scroll-gallery-text-content">
+      <h1 class="v-scroll-gallery-text-content__title">{{ section.settings.title }}</h1>
+      <p class="v-scroll-gallery-text-content__description">{{ section.settings.sub_title }}</p>
+    </div>
 
-      <div class="scroll-gallery-text-content">
-        <h1 class="scroll-gallery-title">{{ section.settings.title }}</h1>
-        <p class="scroll-gallery-description">
-          {{ section.settings.sub_title }}
-        </p>
+    <div class="v-scroll-gallery-container">
+
+      <div class="v-scroll-gallery">
+        {% for block in section.blocks %}
+          <div class="v-scroll-gallery--item v-scroll-gallery--item-{{ forloop.index }}">
+            {% if block.settings.image != blank %}
+              {{
+              block.settings.image
+              | image_url: width: 800
+              | image_tag:
+              loading: 'lazy',
+              class: 'v-scroll-gallery--image'
+              }}
+            {% else %}
+              <div class="v-scroll-gallery-placeholder">
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
       </div>
-        <div class="scroll-gallery">
-          {% for block in section.blocks %}
-            <div class="scroll-gallery--item scroll-gallery--item-{{ forloop.index }}">
-              {% if block.settings.image != blank %}
-                {{
-                block.settings.image
-                | image_url: width: 800
-                | image_tag:
-                loading: 'lazy',
-                class: 'scroll-gallery--image'
-                }}
-              {% else %}
-                <div class="scroll-gallery-placeholder">
-                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                </div>
-              {% endif %}
-            </div>
-          {% endfor %}
-        </div>
+
     </div>
   </div>
-{% comment %}</div>{% endcomment %}
-
 
 <style>
 
-  .scroll-gallery-section {
-    position: relative;
-    min-height: 800px;
-    background-color: #FAF7F1;
-  }
-
-  .scroll-gallery-backgrounds {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-  }
-
-  .scroll-gallery-bg-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 4%;
-  }
-
-  .scroll-gallery-scroll-section{
+  .v-scroll-gallery-section{
     height: 800px;
   }
 
-  .scroll-gallery-text-content{
+  .v-scroll-gallery-text-content{
     margin: 0 auto;
+    width: 500px;
   }
 
-  .scroll-gallery-title {
+  .v-scroll-gallery-text-content__title {
     font-weight: 500;
     font-size: 50px;
     line-height: 120%;
@@ -87,7 +51,7 @@
     text-transform: capitalize;
   }
 
-  .scroll-gallery-description {
+  .v-scroll-gallery-text-content__description {
     font-weight: 400;
     font-style: Normal;
     font-size: 16px;
@@ -98,7 +62,7 @@
     margin: 0 auto;
   }
 
-  .scroll-gallery{
+  .v-scroll-gallery{
     display: flex;
     justify-content: space-between;
     gap: 4px;
@@ -106,84 +70,134 @@
     margin-top: 80px;
   }
 
-  .scroll-gallery--item{
+  .v-scroll-gallery--item{
     width: 250px;
     height: 240px;
-    border: 1px solid black;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     border: 15px solid #E5E5E5;
   }
 
-  .scroll-gallery--image{
+  .v-scroll-gallery--image{
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
 
-  /*.scroll-gallery-placeholder {*/
-  /*  width: 100%;*/
-  /*  height: 100%;*/
-  /*  background: #f5f5f5;*/
-  /*  display: flex;*/
-  /*  align-items: center;*/
-  /*  justify-content: center;*/
-  /*}*/
+  .v-scroll-gallery-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-  .scroll-gallery--item-3{
+
+
+  .v-scroll-gallery--item-3{
     width: 440px;
     height: 426px;
-    background-color: rgba(255, 0, 0, 0.5);
+    /*background-color: rgba(255, 0, 0, 0.5);*/
+    background-color: #E5E5E5;
     z-index: 3;
   }
 
-  .scroll-gallery--item-1,
-  .scroll-gallery--item-5{
+  .v-scroll-gallery--item-1,
+  .v-scroll-gallery--item-5{
     width: 150px;
     height: 140px;
   }
 
-  .scroll-gallery--item-1{
+  .v-scroll-gallery--item-1{
     left: 20%;
     top: 100px;
-    background-color: rgba(0, 0, 255, 0.5);
+    /*background-color: rgba(0, 0, 255, 0.5);*/
+    background-color: #E5E5E5;
     z-index: 1;
   }
 
-  .scroll-gallery--item-2{
-    left: 35%;
-    top: 50px;
-    background-color: rgba(0, 128, 0, 0.5);
-    z-index: 2;
-  }
-
-  .scroll-gallery--item-4{
-    left: 65%;
-    top: 50px;
-    background-color: rgba(0, 128, 0, 0.5);
-    z-index: 2;
-  }
-
-  .scroll-gallery--item-5{
+  .v-scroll-gallery--item-5{
     left: 80%;
     top: 100px;
-    background-color: rgba(0, 0, 255, 0.5);
+    /*background-color: rgba(0, 0, 255, 0.5);*/
+    background-color: #E5E5E5;
     z-index: 1;
   }
 
-  .scroll-gallery.final-state {
+  .v-scroll-gallery--item-2{
+    left: 35%;
+    top: 50px;
+    /*background-color: rgba(0, 128, 0, 0.5);*/
+    background-color: #E5E5E5;
+    z-index: 2;
+  }
+
+  .v-scroll-gallery--item-4{
+    left: 65%;
+    top: 50px;
+    /*background-color: rgba(0, 128, 0, 0.5);*/
+    background-color: #E5E5E5;
+    z-index: 2;
+  }
+
+
+
+  .v-scroll-gallery.final-state {
     gap: 15px;
   }
 
-  .scroll-gallery.final-state .scroll-gallery--item {
+  .v-scroll-gallery.final-state .v-scroll-gallery--item {
     position: relative;
     top: 0 !important;
     left: 0 !important;
     transform: translateX(0) !important;
     width: 248px !important;
     height: 240px !important;
+  }
+
+
+  @media screen and (max-width: 992px) {
+    .v-scroll-gallery-section {
+      height: auto;
+      min-height: 800px;
+      padding-bottom: 40px;
+    }
+
+    .v-scroll-gallery-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 20px;
+    }
+
+    .v-scroll-gallery {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(248px, 1fr);
+      gap: 15px;
+      margin-top: 80px;
+      width: max-content;
+      min-width: 100%;
+      position: relative;
+      transform: none !important;
+    }
+
+    .v-scroll-gallery--item-1,
+    .v-scroll-gallery--item-2,
+    .v-scroll-gallery--item-3,
+    .v-scroll-gallery--item-4,
+    .v-scroll-gallery--item-5 {
+      width: 248px !important;
+      height: 240px !important;
+      position: relative !important;
+      left: 0 !important;
+      top: 0 !important;
+      transform: none !important;
+      z-index: 1;
+    }
   }
 
 
@@ -205,18 +219,18 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const section = document.querySelector('.scroll-gallery-scroll-section');
-    const gallery = document.querySelector('.scroll-gallery');
-    const items = document.querySelectorAll('.scroll-gallery--item');
+    const section = document.querySelector('.v-scroll-gallery-section');
+    const gallery = document.querySelector('.v-scroll-gallery');
+    const items = document.querySelectorAll('.v-scroll-gallery--item');
 
     if (!section) return;
 
     const itemStates = {
-      1: { start: { left: '20%', top: '100px', width: 248, height: 240 }, end: { left: 0, top: 0, width: 248, height: 240 } },
-      2: { start: { left: '35%', top: '30px', width: 377, height: 365 }, end: { left: 0, top: 0, width: 248, height: 240 } },
-      3: { start: { left: '50%', top: '0px', width: 440, height: 426 }, end: { left: 0, top: 0, width: 248, height: 240 } },
-      4: { start: { left: '65%', top: '30px', width: 377, height: 365 }, end: { left: 0, top: 0, width: 248, height: 240 } },
-      5: { start: { left: '80%', top: '100px', width: 248, height: 240 }, end: { left: 0, top: 0, width: 248, height: 240 } }
+      1: { start: { left: '25%', top: '100px', width: 248, height: 240, borderWidth: 15 }, end: { left: 0, top: 0, width: 248, height: 240, borderWidth: 15 } },
+      2: { start: { left: '39%', top: '30px', width: 377, height: 365, borderWidth: 20 }, end: { left: 0, top: 0, width: 248, height: 240, borderWidth: 15 } },
+      3: { start: { left: '50%', top: '0px', width: 440, height: 426, borderWidth: 25 }, end: { left: 0, top: 0, width: 248, height: 240, borderWidth: 15 } },
+      4: { start: { left: '61%', top: '30px', width: 377, height: 365, borderWidth: 20 }, end: { left: 0, top: 0, width: 248, height: 240, borderWidth: 15 } },
+      5: { start: { left: '75%', top: '100px', width: 248, height: 240, borderWidth: 15 }, end: { left: 0, top: 0, width: 248, height: 240,borderWidth: 15 } }
     };
 
     function updateGalleryAnimation(progress) {
@@ -231,11 +245,13 @@
           const currentTop = progress === 1 ? state.end.top : `calc(${state.start.top} + (0px - ${state.start.top}) * ${progress})`;
           const currentWidth = state.start.width + (state.end.width - state.start.width) * progress;
           const currentHeight = state.start.height + (state.end.height - state.start.height) * progress;
+          const currentBorderWidth = state.start.borderWidth + (state.end.borderWidth - state.start.borderWidth) * progress;
 
           item.style.left = currentLeft;
           item.style.top = currentTop;
           item.style.width = currentWidth + 'px';
           item.style.height = currentHeight + 'px';
+          item.style.borderWidth = currentBorderWidth + 'px'
 
           if (progress === 1) {
             item.style.position = 'relative';
@@ -264,7 +280,7 @@
 
       const triggerPoint = windowHeight * 0.4;
       const startAnimation = triggerPoint;
-      const endAnimation = windowHeight * 0.2;
+      const endAnimation = windowHeight * -0.09;
 
       let progress = 0;
 
@@ -281,6 +297,7 @@
     }
 
     let scrollTimeout;
+
     function throttledScroll() {
       if (!scrollTimeout) {
         scrollTimeout = setTimeout(function() {
@@ -299,7 +316,7 @@
 
 {% schema %}
 {
-  "name": "Scroll Gallery",
+  "name": "V-Scroll Gallery",
   "settings": [
     {
       "type": "image_picker",
@@ -336,7 +353,7 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_top",
-      "default": 60
+      "default": 76
     },
     {
       "type": "range",
@@ -365,8 +382,8 @@
   ],
   "presets": [
     {
-      "name": "Scroll Gallery",
-      "category": "Custom Sections",
+      "name": "V-Scroll Gallery",
+      "category": "Custom Sections (valmax)",
       "blocks": [
         {
           "type": "image"
