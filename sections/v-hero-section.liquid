@@ -1,0 +1,283 @@
+<div class="v-hero-section">
+
+  {%- if section.settings.image != blank -%}
+    <div class="v-hero-background">
+      <div class="v-hero-bg-image"
+           style="background-image: url('{{  section.settings.image | img_url: '2000x' }}'); opacity: 1;">
+      </div>
+    </div>
+  {%- else -%}
+    <div class="v-hero-background">
+      {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+  {%- endif -%}
+
+  <div class="v-hero-content-wrapper page-width">
+      <div class="v-hero-content">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'heading' -%}
+              <h2 class="{{ block.settings.heading_size }}"
+                  {{ block.shopify_attributes }}
+              >
+                {{ block.settings.heading }}
+              </h2>
+            {%- when 'text' -%}
+              <div class="rte {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
+                <p>{{ block.settings.text }}</p>
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+
+      {% for block in section.blocks %}
+        {% if block.type == 'buttons' %}
+          <a
+              {% if block.settings.button_link_1 == blank %}
+                role="link" aria-disabled="true"
+              {% else %}
+                href="{{ block.settings.button_link_1 }}"
+              {% endif %}
+              class="button-custom"
+          >
+            {{- block.settings.button_label_1 | escape -}} {% render 'icon-arrow' %}
+          </a>
+        {% endif %}
+      {% endfor %}
+  </div>
+
+</div>
+
+<style>
+  .v-hero-section {
+    position: relative;
+    min-height: 765px;
+  }
+
+  .v-hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .v-hero-bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 1;
+  }
+
+  .v-hero-background svg{
+    min-height: 765px;
+    max-height: 765px;
+    width: 100%;
+  }
+
+  .v-hero-content-wrapper{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    min-height: 715px;
+    width: 100%;
+
+    position: relative;
+    z-index: 2;
+
+    color: #FAF7F1;
+  }
+
+  .v-hero-content{
+    display: flex;
+    flex-direction: column-reverse;
+    width: 630px;
+  }
+
+  .v-hero-content h2 {
+    color: #FAF7F1;
+    margin: 0;
+    font-weight: 500;
+    font-size: 72px;
+    line-height: 113.99999999999999%;
+    letter-spacing: -3%;
+  }
+
+  .v-hero-content p {
+    font-weight: 400;
+    font-style: Normal;
+    font-size: 24px;
+    line-height: 120%;
+    letter-spacing: -2%;
+    margin-bottom: 25px !important;
+  }
+
+  @media screen and (max-width: 768px) {
+
+    .v-hero-section {
+      min-height: 812px;
+    }
+
+    .v-hero-content-wrapper {
+      min-height: 755px;
+    }
+
+    .v-hero-content{
+      margin-top: 370px;
+    }
+
+    .v-hero-content h2 {
+      font-size: 46px;
+    }
+
+    .v-hero-content p {
+      font-size: 18px;
+    }
+
+  }
+
+</style>
+
+{% schema %}
+{
+  "name": "V-Hero Section",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.image-banner.settings.image.label"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.image-banner.blocks.heading.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "t:sections.image-banner.blocks.heading.settings.heading.default",
+          "label": "t:sections.image-banner.blocks.heading.settings.heading.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h2",
+              "label": "t:sections.all.heading_size.options__1.label"
+            },
+            {
+              "value": "h1",
+              "label": "t:sections.all.heading_size.options__2.label"
+            },
+            {
+              "value": "h0",
+              "label": "t:sections.all.heading_size.options__3.label"
+            },
+            {
+              "value": "hxl",
+              "label": "t:sections.all.heading_size.options__4.label"
+            },
+            {
+              "value": "hxxl",
+              "label": "t:sections.all.heading_size.options__5.label"
+            }
+          ],
+          "default": "h1",
+          "label": "t:sections.all.heading_size.label"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.image-banner.blocks.text.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "default": "t:sections.image-banner.blocks.text.settings.text.default",
+          "label": "t:sections.image-banner.blocks.text.settings.text.label"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "options": [
+            {
+              "value": "body",
+              "label": "t:sections.image-banner.blocks.text.settings.text_style.options__1.label"
+            },
+            {
+              "value": "subtitle",
+              "label": "t:sections.image-banner.blocks.text.settings.text_style.options__2.label"
+            },
+            {
+              "value": "caption-with-letter-spacing",
+              "label": "t:sections.image-banner.blocks.text.settings.text_style.options__3.label"
+            }
+          ],
+          "default": "body",
+          "label": "t:sections.image-banner.blocks.text.settings.text_style.label"
+        }
+      ]
+    },
+    {
+      "type": "buttons",
+      "name": "t:sections.image-banner.blocks.buttons.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "default": "t:sections.image-banner.blocks.buttons.settings.button_label_1.default",
+          "label": "t:sections.image-banner.blocks.buttons.settings.button_label_1.label",
+          "info": "t:sections.image-banner.blocks.buttons.settings.button_label_1.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "t:sections.image-banner.blocks.buttons.settings.button_link_1.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary_1",
+          "default": false,
+          "label": "t:sections.image-banner.blocks.buttons.settings.button_style_secondary_1.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "V-Hero Section",
+      "category": "Custom Sections (valmax)",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "buttons"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

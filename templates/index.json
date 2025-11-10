@@ -9,130 +9,207 @@
  */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "image_banner_custom": {
+      "type": "v-hero-section",
       "blocks": {
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Browse our latest products",
+            "heading": "Harmony of Body, Mind, and Space — All in One Solution",
             "heading_size": "h0"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "Reclaim Your Balance. Elevate Your Life.",
+            "text_style": "body"
           }
         },
         "button": {
           "type": "buttons",
           "settings": {
-            "button_label_1": "Shop all",
+            "button_label_1": "Begin Your Wellness Journey",
             "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "button_style_secondary_1": true
           }
         }
       },
       "block_order": [
         "heading",
+        "text",
         "button"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "image_behavior": "none",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "image": "shopify://shop_images/Background_Image.png"
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "swipe_on_mobile": false,
-        "padding_top": 44,
-        "padding_bottom": 36
-      }
-    },
-    "multicolumn_kEiHwQ": {
-      "type": "multicolumn",
+    "animated_gallery_ecDaJY": {
+      "type": "v-scroll-gallery",
       "blocks": {
-        "column_LYy37a": {
-          "type": "column",
+        "image_UEj6Gd": {
+          "type": "image",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": ""
+            "image": "shopify://shop_images/image_8.png"
           }
         },
-        "column_fz3UzW": {
-          "type": "column",
+        "image_WLKHbp": {
+          "type": "image",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": ""
+            "image": "shopify://shop_images/image_6.png"
           }
         },
-        "column_rkjQMr": {
-          "type": "column",
+        "image_zajfm4": {
+          "type": "image",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": ""
+            "image": "shopify://shop_images/image_5_3bc07b56-3946-4e25-9ba2-9ad1d7b15f6c.png"
+          }
+        },
+        "image_H7agBb": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/image_7.png"
+          }
+        },
+        "image_7xRfpA": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/image.png"
           }
         }
       },
       "block_order": [
-        "column_LYy37a",
-        "column_fz3UzW",
-        "column_rkjQMr"
+        "image_UEj6Gd",
+        "image_WLKHbp",
+        "image_zajfm4",
+        "image_H7agBb",
+        "image_7xRfpA"
       ],
+      "name": "Scroll Gallery",
       "settings": {
-        "title": "Multicolumn",
-        "heading_size": "h1",
-        "image_width": "full",
-        "image_ratio": "adapt",
-        "columns_desktop": 3,
-        "column_alignment": "left",
-        "background_style": "primary",
-        "button_label": "Button label",
-        "button_link": "",
-        "color_scheme": "",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "body_bg": "#faf7f1",
+        "title": "Norkaya Is More Than Just Hydrotherapy",
+        "sub_title": "Our journey is just beginning, and we will continue to innovate. Integrating wellness concepts into every facet of your life—from the water you immerse in to the spaces you inhabit.",
+        "padding_top": 76,
+        "padding_bottom": 60
+      }
+    },
+    "slider_walmax_FfddYX": {
+      "type": "v-slider-section",
+      "blocks": {
+        "slide_YYHp8U": {
+          "type": "slide",
+          "settings": {
+            "heading": "Overwhelmed by Stress?",
+            "sub_heading": "The relentless pace of modern life can leave us depleted, longing for moments of profound peace and mental clarity.",
+            "image": "shopify://shop_images/User_Image.png"
+          }
+        },
+        "slide_K8g4GG": {
+          "type": "slide",
+          "settings": {
+            "heading": "Overwhelmed by Stress?",
+            "sub_heading": "The relentless pace of modern life can leave us depleted, longing for moments of profound peace and mental clarity."
+          }
+        },
+        "slide_n78KFR": {
+          "type": "slide",
+          "settings": {
+            "heading": "Overwhelmed by Stress?",
+            "sub_heading": "The relentless pace of modern life can leave us depleted, longing for moments of profound peace and mental clarity."
+          }
+        }
+      },
+      "block_order": [
+        "slide_YYHp8U",
+        "slide_K8g4GG",
+        "slide_n78KFR"
+      ],
+      "name": "Slider valmax",
+      "settings": {
+        "heading": "The Human Need",
+        "sub_heading": "Harmony of Body, Mind, and Space — All in One Solution",
+        "color_background_section": "#312A27",
+        "color_background_card": "#251E1B"
+      }
+    },
+    "auto_tabs_selection_valmax_CtNqbV": {
+      "type": "v-auto-tabs-section",
+      "blocks": {
+        "tab_N9h8at": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Immersive Hydro-Massage",
+            "tab_image": "shopify://shop_images/svg741.png",
+            "bg_image": "shopify://shop_images/33edffafed6207c31c0a0f3850d725447925cae6.png",
+            "tab_heading": "Complete Home Sanctuary",
+            "tab_text": "<p>Transform your living space into a personal retreat. Norkaya’s complete wellness solutions combine relaxation, hydrotherapy, and design to create a sanctuary where body and mind can truly recharge.</p>",
+            "tab_button_label": "Discover Wellness",
+            "tab_button_link": "#"
+          }
+        },
+        "tab_ccQGcL": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "The Hot & Cold Hydro-Ritual",
+            "tab_heading": "The Hot & Cold Hydro-Ritual",
+            "tab_text": "<p>orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+            "tab_button_label": "Discover Wellness",
+            "tab_button_link": "#"
+          }
+        },
+        "tab_cQTwYM": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Artisan Wood & Marble Craftsmanship",
+            "tab_heading": "Artisan Wood & Marble Craftsmanship",
+            "tab_text": "<p>orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+            "tab_button_label": "Discover Wellness",
+            "tab_button_link": "#"
+          }
+        },
+        "tab_NEnkfc": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Fitness & Wellness",
+            "tab_heading": "Fitness & Wellness",
+            "tab_text": "<p>orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+            "tab_button_label": "Discover Wellness",
+            "tab_button_link": "#"
+          }
+        },
+        "tab_QfrQNR": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Complete Home Sanctuary",
+            "tab_image": "shopify://shop_images/svg1398.png",
+            "bg_image": "shopify://shop_images/a85b31b1ab0cd7538f90aeac5f7cda8862e02ac0.jpg",
+            "tab_heading": "Complete Home Sanctuary",
+            "tab_text": "<p>Transform your living space into a personal retreat. Norkaya’s complete wellness solutions combine relaxation, hydrotherapy, and design to create a sanctuary where body and mind can truly recharge.</p>",
+            "tab_button_label": "Discover Wellness",
+            "tab_button_link": "#"
+          }
+        }
+      },
+      "block_order": [
+        "tab_N9h8at",
+        "tab_ccQGcL",
+        "tab_cQTwYM",
+        "tab_NEnkfc",
+        "tab_QfrQNR"
+      ],
+      "name": "Auto-switching Tabs",
+      "settings": {
+        "heading": "Intelligent Solutions for Everyday Harmony",
+        "padding_top": 76,
+        "padding_bottom": 60
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection",
-    "multicolumn_kEiHwQ"
+    "image_banner_custom",
+    "animated_gallery_ecDaJY",
+    "slider_walmax_FfddYX",
+    "auto_tabs_selection_valmax_CtNqbV"
   ]
 }

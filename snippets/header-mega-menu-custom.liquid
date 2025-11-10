@@ -1,0 +1,543 @@
+{% comment %}
+  Renders a megamenu for the header.
+
+  Usage:
+  {% render 'header-mega-menu' %}
+{% endcomment %}
+
+<nav class="header__inline-menu">
+    <ul class="list-menu list-menu--inline" role="list">
+        {%- for link in section.settings.menu.links -%}
+            <li>
+                {%- if link.links != blank -%}
+                    <header-menu>
+                        <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu">
+                            <summary
+                                id="HeaderMenu-{{ link.handle }}"
+                                class="header__menu-item header__menu-item_valmax list-menu__item link focus-inset"
+                            >
+                                <span
+                                  {%- if link.child_active %}
+                                      class="header__active-menu-item"
+                                  {% endif %}
+                                >
+                                  {{- link.title | escape -}}
+                                </span>
+                                {% render 'icon-caret' %}
+                            </summary>
+                            <div
+                                id="MegaMenu-Content-{{ forloop.index }}"
+                                class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup"
+                                tabindex="-1"
+                            >
+                                <div class="mega-menu__container page-width">
+                                    <ul
+                                        class="mega-menu__list {% if link.levels == 1 %} mega-menu__list--condensed {% endif %}"
+                                        role="list"
+                                    >
+                                        {%- for childlink in link.links -%}
+                                            <li class="mega-menu__item ">
+
+                                                {%- assign image_url = '' -%}
+                                                {%- assign image_alt = '' -%}
+                                                {%- assign has_image = false -%}
+                                                {%- assign is_current = false -%}
+
+                                                {%- if childlink.current or childlink.child_active -%}
+                                                    {%- assign is_current = true -%}
+                                                {%- elsif childlink.links != blank -%}
+                                                    {%- for grandchildlink in childlink.links -%}
+                                                        {%- if grandchildlink.current -%}
+                                                            {%- assign is_current = true -%}
+                                                            {%- break -%}
+                                                        {%- endif -%}
+                                                    {%- endfor -%}
+                                                {%- endif -%}
+
+                                                {%- if childlink.type == 'collection_link' -%}
+                                                    {%- if childlink.object.image -%}
+                                                        {%- assign image_url = childlink.object.image | image_url: width: 400 -%}
+                                                        {%- assign image_alt = childlink.object.image.alt | default: childlink.title | escape -%}
+                                                        {%- assign has_image = true -%}
+                                                    {%- elsif childlink.object.products.first and childlink.object.products.first.featured_image -%}
+                                                        {%- assign image_url = childlink.object.products.first.featured_image | image_url: width: 400 -%}
+                                                        {%- assign image_alt = childlink.object.products.first.featured_image.alt | default: childlink.title | escape -%}
+                                                        {%- assign has_image = true -%}
+                                                    {%- endif -%}
+                                                {%- elsif childlink.type == 'product_link' -%}
+                                                    {%- if childlink.object.featured_image -%}
+                                                        {%- assign image_url = childlink.object.featured_image | image_url: width: 400 -%}
+                                                        {%- assign image_alt = childlink.object.featured_image.alt | default: childlink.title | escape -%}
+                                                        {%- assign has_image = true -%}
+                                                    {%- endif -%}
+                                                {%- endif -%}
+
+                                                {%- unless has_image -%}
+                                                    {%- if section.settings.fallback_image != blank -%}
+                                                        {%- assign image_url = section.settings.fallback_image | image_url: width: 400 -%}
+                                                        {%- assign image_alt = childlink.title | escape -%}
+                                                    {%- endif -%}
+                                                {%- endunless -%}
+
+                                                <a
+                                                    id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
+                                                    href="{{ childlink.url }}"
+                                                    class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"
+                                                    {% if childlink.current %}
+                                                        aria-current="page"
+                                                    {% endif %}
+                                                    data-image-handle="{{ childlink.handle }}"
+                                                    data-image-url="{{ image_url }}"
+                                                    data-image-alt="{{ image_alt }}"
+                                                    data-debug-type="{{ childlink.type }}"
+                                                    data-debug-title="{{ childlink.title | escape }}"
+                                                    data-has-image="{{ has_image }}"
+                                                    {% if is_current %}data-current-page="true"{% endif %}
+                                                >
+                                                    {{ childlink.title | escape }}
+                                                    {%- if is_current -%} ← {%- endif -%}
+                                                </a>
+
+                                                {%- if childlink.links != blank -%}
+                                                    <ul class="list-unstyled" role="list">
+                                                        {%- for grandchildlink in childlink.links -%}
+                                                            <li>
+                                                                {%- assign grandchild_image_url = '' -%}
+                                                                {%- assign grandchild_image_alt = '' -%}
+                                                                {%- assign grandchild_has_image = false -%}
+                                                                {%- assign grandchild_is_current = false -%}
+
+                                                                {%- if grandchildlink.current -%}
+                                                                    {%- assign grandchild_is_current = true -%}
+                                                                {%- endif -%}
+
+                                                                {%- if grandchildlink.type == 'collection_link' -%}
+                                                                    {%- if grandchildlink.object.image -%}
+                                                                        {%- assign grandchild_image_url = grandchildlink.object.image | image_url: width: 400 -%}
+                                                                        {%- assign grandchild_image_alt = grandchildlink.object.image.alt | default: grandchildlink.title | escape -%}
+                                                                        {%- assign grandchild_has_image = true -%}
+                                                                    {%- elsif grandchildlink.object.products.first and grandchildlink.object.products.first.featured_image -%}
+                                                                        {%- assign grandchild_image_url = grandchildlink.object.products.first.featured_image | image_url: width: 400 -%}
+                                                                        {%- assign grandchild_image_alt = grandchildlink.object.products.first.featured_image.alt | default: grandchildlink.title | escape -%}
+                                                                        {%- assign grandchild_has_image = true -%}
+                                                                    {%- endif -%}
+                                                                {%- elsif grandchildlink.type == 'product_link' -%}
+                                                                    {%- if grandchildlink.object.featured_image -%}
+                                                                        {%- assign grandchild_image_url = grandchildlink.object.featured_image | image_url: width: 400 -%}
+                                                                        {%- assign grandchild_image_alt = grandchildlink.object.featured_image.alt | default: grandchildlink.title | escape -%}
+                                                                        {%- assign grandchild_has_image = true -%}
+                                                                    {%- endif -%}
+                                                                {%- endif -%}
+
+                                                                {%- unless grandchild_has_image -%}
+                                                                    {%- if section.settings.fallback_image != blank -%}
+                                                                        {%- assign grandchild_image_url = section.settings.fallback_image | image_url: width: 400 -%}
+                                                                        {%- assign grandchild_image_alt = grandchildlink.title | escape -%}
+                                                                    {%- endif -%}
+                                                                {%- endunless -%}
+
+                                                                <a
+                                                                    id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
+                                                                    href="{{ grandchildlink.url }}"
+                                                                    class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"
+                                                                    {% if grandchildlink.current %}
+                                                                        aria-current="page"
+                                                                    {% endif %}
+                                                                    data-image-handle="{{ grandchildlink.handle }}"
+                                                                    data-image-url="{{ grandchild_image_url }}"
+                                                                    data-image-alt="{{ grandchild_image_alt }}"
+                                                                    data-debug-type="{{ grandchildlink.type }}"
+                                                                    data-debug-title="{{ grandchildlink.title | escape }}"
+                                                                    data-has-image="{{ grandchild_has_image }}"
+                                                                    {% if grandchild_is_current %}data-current-page="true"{% endif %}
+                                                                >
+                                                                    {{ grandchildlink.title | escape }}
+                                                                    {%- if grandchild_is_current -%} ← {%- endif -%}
+                                                                </a>
+                                                            </li>
+                                                        {%- endfor -%}
+                                                    </ul>
+                                                {%- endif -%}
+                                            </li>
+                                        {%- endfor -%}
+                                    </ul>
+
+
+                                    <div class="mega-menu__image-sidebar">
+                                        <div class="mega-menu__image-container">
+
+                                            {%- assign default_image_url = '' -%}
+                                            {%- assign default_image_alt = '' -%}
+                                            {%- assign found_current_image = false -%}
+
+                                            {%- for childlink in link.links -%}
+                                                {%- assign child_is_current = false -%}
+                                                {%- assign child_image_url = '' -%}
+                                                {%- assign child_image_alt = '' -%}
+                                                {%- assign child_has_image = false -%}
+
+                                                {%- if childlink.current or childlink.child_active -%}
+                                                    {%- assign child_is_current = true -%}
+                                                {%- elsif childlink.links != blank -%}
+                                                    {%- for grandchildlink in childlink.links -%}
+                                                        {%- if grandchildlink.current -%}
+                                                            {%- assign child_is_current = true -%}
+                                                            {%- break -%}
+                                                        {%- endif -%}
+                                                    {%- endfor -%}
+                                                {%- endif -%}
+
+                                                {%- if child_is_current -%}
+                                                    {%- if childlink.type == 'collection_link' -%}
+                                                        {%- if childlink.object.image -%}
+                                                            {%- assign child_image_url = childlink.object.image | image_url: width: 400 -%}
+                                                            {%- assign child_image_alt = childlink.object.image.alt | default: childlink.title | escape -%}
+                                                            {%- assign child_has_image = true -%}
+                                                        {%- elsif childlink.object.products.first and childlink.object.products.first.featured_image -%}
+                                                            {%- assign child_image_url = childlink.object.products.first.featured_image | image_url: width: 400 -%}
+                                                            {%- assign child_image_alt = childlink.object.products.first.featured_image.alt | default: childlink.title | escape -%}
+                                                            {%- assign child_has_image = true -%}
+                                                        {%- endif -%}
+                                                    {%- elsif childlink.type == 'product_link' -%}
+                                                        {%- if childlink.object.featured_image -%}
+                                                            {%- assign child_image_url = childlink.object.featured_image | image_url: width: 400 -%}
+                                                            {%- assign child_image_alt = childlink.object.featured_image.alt | default: childlink.title | escape -%}
+                                                            {%- assign child_has_image = true -%}
+                                                        {%- endif -%}
+                                                    {%- endif -%}
+
+                                                    {%- unless child_has_image -%}
+                                                        {%- if section.settings.fallback_image != blank -%}
+                                                            {%- assign child_image_url = section.settings.fallback_image | image_url: width: 400 -%}
+                                                            {%- assign child_image_alt = childlink.title | escape -%}
+                                                        {%- endif -%}
+                                                    {%- endunless -%}
+
+                                                    {%- if child_image_url != blank -%}
+                                                        {%- assign default_image_url = child_image_url -%}
+                                                        {%- assign default_image_alt = child_image_alt -%}
+                                                        {%- assign found_current_image = true -%}
+                                                        {%- break -%}
+                                                    {%- endif -%}
+                                                {%- endif -%}
+                                            {%- endfor -%}
+
+                                            {%- unless found_current_image -%}
+                                                {%- assign first_childlink = link.links.first -%}
+                                                {%- assign first_image_url = '' -%}
+                                                {%- assign first_image_alt = '' -%}
+                                                {%- assign first_has_image = false -%}
+
+                                                {%- if first_childlink.type == 'collection_link' -%}
+                                                    {%- if first_childlink.object.image -%}
+                                                        {%- assign first_image_url = first_childlink.object.image | image_url: width: 400 -%}
+                                                        {%- assign first_image_alt = first_childlink.object.image.alt | default: first_childlink.title | escape -%}
+                                                        {%- assign first_has_image = true -%}
+                                                    {%- elsif first_childlink.object.products.first and first_childlink.object.products.first.featured_image -%}
+                                                        {%- assign first_image_url = first_childlink.object.products.first.featured_image | image_url: width: 400 -%}
+                                                        {%- assign first_image_alt = first_childlink.object.products.first.featured_image.alt | default: first_childlink.title | escape -%}
+                                                        {%- assign first_has_image = true -%}
+                                                    {%- endif -%}
+                                                {%- elsif first_childlink.type == 'product_link' -%}
+                                                    {%- if first_childlink.object.featured_image -%}
+                                                        {%- assign first_image_url = first_childlink.object.featured_image | image_url: width: 400 -%}
+                                                        {%- assign first_image_alt = first_childlink.object.featured_image.alt | default: first_childlink.title | escape -%}
+                                                        {%- assign first_has_image = true -%}
+                                                    {%- endif -%}
+                                                {%- endif -%}
+
+                                                {%- unless first_has_image -%}
+                                                    {%- if section.settings.fallback_image != blank -%}
+                                                        {%- assign first_image_url = section.settings.fallback_image | image_url: width: 400 -%}
+                                                        {%- assign first_image_alt = first_childlink.title | escape -%}
+                                                    {%- endif -%}
+                                                {%- endunless -%}
+
+                                                {%- if first_image_url != blank -%}
+                                                    {%- assign default_image_url = first_image_url -%}
+                                                    {%- assign default_image_alt = first_image_alt -%}
+                                                {%- endif -%}
+                                            {%- endunless -%}
+
+                                            {%- if default_image_url == blank and section.settings.fallback_image != blank -%}
+                                                {%- assign default_image_url = section.settings.fallback_image | image_url: width: 400 -%}
+                                                {%- assign default_image_alt = 'Default image' -%}
+                                            {%- endif -%}
+
+                                            {%- if default_image_url != blank -%}
+                                                <img
+                                                    id="MegaMenu-Image-{{ link.handle }}"
+                                                    src="{{ default_image_url }}"
+                                                    alt="{{ default_image_alt }}"
+                                                    class="mega-menu__img"
+                                                    loading="lazy"
+                                                    width="200"
+                                                    height="200"
+                                                    data-default-src="{{ default_image_url }}"
+                                                    {% if found_current_image %}data-current-image="true"{% endif %}
+                                                >
+                                            {%- else -%}
+                                                <div class="mega-menu__placeholder" id="MegaMenu-Image-{{ link.handle }}">
+                                                    <span>Select a category</span>
+                                                </div>
+                                            {%- endif -%}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+                    </header-menu>
+                {%- else -%}
+                    <a
+                        id="HeaderMenu-{{ link.handle }}"
+                        href="{{ link.url }}"
+                        class="header__menu-item list-menu__item link link--text focus-inset header__menu-item_valmax"
+                        {% if link.current %}
+                            aria-current="page"
+                        {% endif %}
+                    >
+                <span
+                  {%- if link.current %}
+                      class="header__active-menu-item header__menu-item_valmax"
+                  {% endif %}
+                >
+                  {{- link.title | escape -}}
+                </span>
+                    </a>
+                {%- endif -%}
+            </li>
+        {%- endfor -%}
+    </ul>
+</nav>
+
+<style>
+    .mega-menu__container {
+        display: flex;
+        gap: 3rem;
+        align-items: flex-start;
+    }
+
+    .mega-menu__list {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .mega-menu__item {
+        position: relative;
+    }
+
+    .mega-menu__image-sidebar {
+        flex: 0 0 250px;
+        position: sticky;
+        top: 20px;
+    }
+
+    .mega-menu__image-container {
+        border-radius: 8px;
+        overflow: hidden;
+        background: #f5f5f5;
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mega-menu__img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: all 0.3s ease;
+    }
+
+    .mega-menu__placeholder {
+        padding: 2rem;
+        text-align: center;
+        color: #999;
+    }
+
+    .mega-menu__link {
+        transition: color 0.2s ease;
+        cursor: pointer;
+        display: block;
+        padding: 0.5rem 0;
+    }
+
+    .mega-menu__link:hover {
+        color: var(--color-accent);
+        background: #f9f9f9;
+        padding-left: 0.5rem;
+    }
+
+    @media screen and (max-width: 768px) {
+        .mega-menu__container {
+            flex-direction: column;
+        }
+
+        .mega-menu__image-sidebar {
+            flex: 0 0 auto;
+            width: 100%;
+            max-width: 200px;
+            margin: 1rem auto 0;
+        }
+    }
+
+    .header__menu-item_valmax{
+        color: #fff;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        function initMegaMenuImages() {
+            const menuLinks = document.querySelectorAll('.mega-menu__link');
+
+            const currentPageLinks = document.querySelectorAll('.mega-menu__link[data-current-page="true"]');
+
+            currentPageLinks.forEach(link => {
+                const imageUrl = link.getAttribute('data-image-url');
+            });
+
+            menuLinks.forEach((link, index) => {
+                const imageUrl = link.getAttribute('data-image-url');
+                const debugType = link.getAttribute('data-debug-type');
+                const debugTitle = link.getAttribute('data-debug-title');
+                const hasImage = link.getAttribute('data-has-image') === 'true';
+                const isCurrent = link.getAttribute('data-current-page') === 'true';
+
+                if (isCurrent) {
+                    console.log(`CURRENT PAGE: ${debugTitle}`, {
+                        imageUrl: imageUrl,
+                        hasOwnImage: hasImage,
+                        type: debugType
+                    });
+                }
+
+
+                link.addEventListener('mouseenter', function(e) {
+                    const newImageUrl = this.getAttribute('data-image-url');
+                    const newImageAlt = this.getAttribute('data-image-alt');
+                    const parentDetails = this.closest('.mega-menu');
+
+                    if (newImageUrl && parentDetails) {
+                        const menuImage = parentDetails.querySelector('.mega-menu__img');
+                        const placeholder = parentDetails.querySelector('.mega-menu__placeholder');
+
+                        if (menuImage) {
+                            menuImage.src = newImageUrl;
+                            menuImage.alt = newImageAlt;
+                        } else if (placeholder && newImageUrl) {
+                            const newImg = document.createElement('img');
+                            newImg.src = newImageUrl;
+                            newImg.alt = newImageAlt;
+                            newImg.className = 'mega-menu__img';
+                            newImg.loading = 'lazy';
+                            newImg.width = 200;
+                            newImg.height = 200;
+                            placeholder.replaceWith(newImg);
+                        }
+                    }
+                });
+            });
+        }
+
+
+        initMegaMenuImages();
+
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.mega-menu summary')) {
+                setTimeout(() => {
+                    initMegaMenuImages();
+                }, 300);
+            }
+        });
+
+
+        document.addEventListener('touchstart', function(e) {
+            if (e.target.closest('.mega-menu__link')) {
+                const link = e.target.closest('.mega-menu__link');
+                const newImageUrl = link.getAttribute('data-image-url');
+                const newImageAlt = link.getAttribute('data-image-alt');
+                const parentDetails = link.closest('.mega-menu');
+
+                if (newImageUrl && parentDetails) {
+                    const menuImage = parentDetails.querySelector('.mega-menu__img');
+                    if (menuImage) {
+                        menuImage.src = newImageUrl;
+                        menuImage.alt = newImageAlt;
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+
+
+<div class="mega-menu-container desktop-only">
+    {%- for link in linklists[main_menu].links -%}
+    {%- if link.links != blank -%}
+    <div class="mega-menu" id="mega-menu-{{ link.handle }}" data-megamenu-panel>
+        <div class="mega-menu__inner">
+
+            <div class="mega-menu__links">
+                <ul class="mega-menu__links-list">
+                    {%- for child_link in link.links -%}
+                    {%- liquid
+
+                        assign img_src = ''
+                        assign img_alt = ''
+
+
+                        if child_link.object.type == 'collection' and child_link.object.image
+                          assign img_src = child_link.object.image | image_url: width: 500
+                          assign img_alt = child_link.object.image.alt | escape
+                        endif
+                    -%}
+                        <li>
+                            <a
+                              href="{{ child_link.url }}"
+                              data-image-src="{{ img_src }}"
+                              data-image-alt="{{ img_alt }}"
+                              data-image-title="{{ child_link.title | escape }}"
+                            >
+                              {{ child_link.title }}
+                            </a>
+                        </li>
+                    {%- endfor -%}
+                </ul>
+            </div>
+
+            <div
+                class="mega-menu__images"
+                data-placeholder-src="{{ section.settings.promo_image | image_url: width: 500 }}"
+                data-placeholder-alt="{{ section.settings.promo_image.alt | escape | default: 'Placeholder' }}"
+                data-placeholder-title="{{ section.settings.promo_heading | escape }}"
+            >
+                <div class="mega-menu__image-display">
+
+                    {%- if section.settings.promo_image != blank -%}
+                        <img
+                            src="{{ section.settings.promo_image | image_url: width: 500 }}"
+                            alt="{{ section.settings.promo_image.alt | escape }}"
+                            class="mega-menu__display-img"
+                            loading="lazy"
+                            width="500"
+                            height="500"
+                        >
+                            <span class="mega-menu__display-title">{{ section.settings.promo_heading | escape }}</span>
+                    {%- else -%}
+
+                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg mega-menu__display-img' }}
+                        <span class="mega-menu__display-title"></span>
+                    {%- endif -%}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {%- endif -%}
+    {%- endfor -%}
+</div>

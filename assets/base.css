@@ -102,7 +102,7 @@ body:has(.section-header .drawer-menu) .announcement-bar-section .page-width {
 
 @media screen and (min-width: 750px) {
   .page-width {
-    padding: 0 5rem;
+    padding: 0 4rem;
   }
 
   .header.page-width,
@@ -2325,9 +2325,13 @@ input[type='checkbox'] {
 
 /* Main Header Layout */
 .header-wrapper {
-  display: block;
-  position: relative;
-  background-color: rgb(var(--color-background));
+  /*display: block;*/
+  /*position: relative;*/
+  /*background-color: rgb(var(--color-background));*/
+
+  width: 100%;
+  background-color: transparent !important;
+  position: fixed;
 }
 
 .header-wrapper--border-bottom {
@@ -3565,4 +3569,40 @@ details-disclosure > details {
   100% {
     transform: translateX(100%) scaleX(0);
   }
+}
+
+.button-custom {
+  background-color: #FAF7F1;
+  color: #251E1B;
+  text-transform: uppercase;
+  border-radius: 36px;
+  padding: 14px 6px;
+  border-color: transparent;
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+
+
+  font-weight: 500;
+  line-height: 120%;
+  letter-spacing: -1%;
+}
+
+.button-custom:hover {
+  opacity: 0.7;
+}
+
+
+/*.header-wrapper__valmax{*/
+/*  width: 100%;*/
+/*  background-color: transparent !important;*/
+/*  position: fixed;*/
+/*}*/
+
+.header__valmax {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  padding: 10px 0;
 }
