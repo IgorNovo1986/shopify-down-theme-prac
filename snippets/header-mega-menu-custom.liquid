@@ -473,3 +473,71 @@
         });
     });
 </script>
+
+
+
+<div class="mega-menu-container desktop-only">
+    {%- for link in linklists[main_menu].links -%}
+    {%- if link.links != blank -%}
+    <div class="mega-menu" id="mega-menu-{{ link.handle }}" data-megamenu-panel>
+        <div class="mega-menu__inner">
+
+            <div class="mega-menu__links">
+                <ul class="mega-menu__links-list">
+                    {%- for child_link in link.links -%}
+                    {%- liquid
+
+                        assign img_src = ''
+                        assign img_alt = ''
+
+
+                        if child_link.object.type == 'collection' and child_link.object.image
+                          assign img_src = child_link.object.image | image_url: width: 500
+                          assign img_alt = child_link.object.image.alt | escape
+                        endif
+                    -%}
+                        <li>
+                            <a
+                              href="{{ child_link.url }}"
+                              data-image-src="{{ img_src }}"
+                              data-image-alt="{{ img_alt }}"
+                              data-image-title="{{ child_link.title | escape }}"
+                            >
+                              {{ child_link.title }}
+                            </a>
+                        </li>
+                    {%- endfor -%}
+                </ul>
+            </div>
+
+            <div
+                class="mega-menu__images"
+                data-placeholder-src="{{ section.settings.promo_image | image_url: width: 500 }}"
+                data-placeholder-alt="{{ section.settings.promo_image.alt | escape | default: 'Placeholder' }}"
+                data-placeholder-title="{{ section.settings.promo_heading | escape }}"
+            >
+                <div class="mega-menu__image-display">
+
+                    {%- if section.settings.promo_image != blank -%}
+                        <img
+                            src="{{ section.settings.promo_image | image_url: width: 500 }}"
+                            alt="{{ section.settings.promo_image.alt | escape }}"
+                            class="mega-menu__display-img"
+                            loading="lazy"
+                            width="500"
+                            height="500"
+                        >
+                            <span class="mega-menu__display-title">{{ section.settings.promo_heading | escape }}</span>
+                    {%- else -%}
+
+                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg mega-menu__display-img' }}
+                        <span class="mega-menu__display-title"></span>
+                    {%- endif -%}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {%- endif -%}
+    {%- endfor -%}
+</div>

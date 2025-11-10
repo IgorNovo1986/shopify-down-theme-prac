@@ -1,0 +1,486 @@
+{{ 'v-header.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+    assign main_menu = section.settings.menu
+    assign header_classes = 'v-site-header header-is-transparent'
+-%}
+
+<header class="{{ header_classes }}" data-site-header>
+
+    <div class="v-header-inner">
+
+        <div class="v-header-left">
+            <h1 class="v-header-logo">
+                <a href="{{ routes.root_url }}" class="v-header-logo__link">
+                    {%- if settings.logo -%}
+                        {% comment %}<img{% endcomment %}
+                            {% comment %}src="{{ settings.logo | image_url: width: settings.logo.width }}"{% endcomment %}
+                            {% comment %}alt="{{ settings.logo.alt | default: shop.name | escape }}"{% endcomment %}
+                            {% comment %}class="v-header-logo__image"{% endcomment %}
+                            {% comment %}width="{{ settings.logo.width }}"{% endcomment %}
+                            {% comment %}height="{{ settings.logo.height }}"{% endcomment %}
+                            {% comment %}loading="eager"{% endcomment %}
+                        {% comment %}>{% endcomment %}
+                        {% render 'v-icon-logo' %}
+                    {%- else -%}
+                        {{ shop.name }}
+                    {%- endif -%}
+                </a>
+            </h1>
+        </div>
+
+        <div class="v-header-center">
+            <nav class="v-header-nav desktop-only-flex">
+                <ul class="v-header-nav__list">
+                    {%- for link in linklists[main_menu].links -%}
+                        {%- liquid
+                            assign has_dropdown = false
+                            if link.links != blank
+                                assign has_dropdown = true
+                            endif
+                        -%}
+
+                        <li class="v-header-nav__item">
+                            <a
+                                href="{{ link.url }}"
+                                class="v-header-nav__link"
+                                {% if has_dropdown %}
+                                    data-megamenu-trigger="{{ link.handle }}"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                {% endif %}
+                            >
+                                {{ link.title }}
+                                {%- if has_dropdown -%}
+                                    <span class="icon-chevron">{% render 'v-icon-chevron' %}</span>
+                                {%- endif -%}
+                            </a>
+                        </li>
+                    {%- endfor -%}
+                </ul>
+            </nav>
+        </div>
+
+        <div class="v-header-right">
+            <button type="button" class="v-header-icon icon-search desktop-only" data-search-trigger aria-label="Search">
+                <span>Search</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                    <path d="M7.44417 14.1481C8.76984 14.1493 10.0662 13.7578 11.1695 13.0229C12.2728 12.288 13.1336 11.2427 13.6433 10.0189C14.1527 8.79495 14.2871 7.44729 14.0294 6.14687C13.7717 4.84645 13.1335 3.65189 12.1958 2.71472C11.2587 1.77718 10.0647 1.13848 8.76473 0.87935C7.46474 0.620219 6.1171 0.752286 4.89214 1.25886C3.66718 1.76543 2.61989 2.62377 1.88262 3.72539C1.14536 4.82702 0.75121 6.12248 0.75 7.44805C0.75 9.22388 1.455 10.9264 2.71 12.1822C3.9654 13.4382 5.66755 14.1451 7.44333 14.1481M12.1983 12.2006L16.1667 16.1664" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <a href="{{ routes.cart_url }}" class="v-header-icon icon-cart" aria-label="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
+                    <path d="M0.975079 12.2504C1.73501 13.1655 3.14849 13.1655 5.9767 13.1655H6.43266C9.26088 13.1655 10.675 13.1655 11.4349 12.2504M0.975079 12.2504C0.215147 11.3346 0.476057 9.94518 0.997244 7.165C1.36771 5.1891 1.55263 4.20052 2.2562 3.61662M11.4349 12.2504C12.1949 11.3346 11.9339 9.94518 11.4128 7.165C11.0423 5.1891 10.8567 4.20052 10.1532 3.61662M10.1532 3.61662C9.45023 3.03271 8.44395 3.03271 6.4333 3.03271H5.97607C3.96541 3.03271 2.95977 3.03271 2.2562 3.61662" stroke="currentColor"/>
+                    <path d="M4.30469 3.0332V2.3999C4.30469 1.89602 4.50485 1.41277 4.86114 1.05647C5.21742 0.700168 5.70065 0.5 6.20452 0.5C6.70839 0.5 7.19162 0.700168 7.5479 1.05647C7.90419 1.41277 8.10435 1.89602 8.10435 2.3999V3.0332" stroke="currentColor" stroke-linecap="round"/>
+                </svg>
+                <span class="cart-count"></span>
+            </a>
+            <button class="v-header-icon icon-burger mobile-only-flex" data-mobile-trigger aria-label="Открыть меню">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
+    </div>
+
+    <div class="mega-menu-container desktop-only">
+        {%- for link in linklists[main_menu].links -%}
+            {%- if link.links != blank -%}
+                <div class="mega-menu" id="mega-menu-{{ link.handle }}" data-megamenu-panel>
+                    <div class="mega-menu__inner page-width">
+
+                        <div class="mega-menu__links">
+                            <ul class="mega-menu__links-list">
+                                {%- for child_link in link.links -%}
+                                    {%- liquid
+
+                                        assign img_src = ''
+                                        assign img_alt = ''
+
+
+                                        if child_link.object.image != blank
+                                            assign img_src = child_link.object.image | image_url: width: 500
+                                            assign img_alt = child_link.object.image.alt | escape
+                                        endif
+                                    -%}
+                                    <li>
+                                        <a
+                                            href="{{ child_link.url }}"
+                                            data-image-src="{{ img_src }}"
+                                            data-image-alt="{{ img_alt }}"
+                                            data-image-title="{{ child_link.title | escape }}"
+                                        >
+                                            {{ child_link.title }}
+                                        </a>
+                                    </li>
+                                {%- endfor -%}
+                            </ul>
+                        </div>
+
+                        <div
+                            class="mega-menu__images"
+                            data-placeholder-src="{{ section.settings.promo_image | image_url: width: 500 }}"
+                            data-placeholder-alt="{{ section.settings.promo_image.alt | escape | default: 'Placeholder' }}"
+                        >
+                            <div class="mega-menu__image-display">
+
+                                {%- if section.settings.promo_image != blank -%}
+                                    <img
+                                        src="{{ section.settings.promo_image | image_url: width: 500 }}"
+                                        alt="{{ section.settings.promo_image.alt | escape }}"
+                                        class="mega-menu__display-img"
+                                        loading="lazy"
+                                        width="500"
+                                        height="500"
+                                    >
+                                {%- else -%}
+
+                                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg mega-menu__display-img' }}
+                                {%- endif -%}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            {%- endif -%}
+        {%- endfor -%}
+    </div>
+
+</header>
+
+<div class="search-modal" data-search-modal>
+    <div class="search-modal__overlay" data-search-close></div>
+    <div class="search-modal__content">
+        <form action="{{ routes.search_url }}" method="get" class="search-modal__form">
+            <input
+                type="search"
+                name="q"
+                placeholder="Search for products"
+                class="search-modal__input"
+                autocomplete="off"
+            >
+        </form>
+        <button class="search-modal__close" data-search-close aria-label="Закрыть поиск">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M2.37148 2.00108L7.32874 6.95834C8.10979 7.73939 8.10979 9.00572 7.32874 9.78677L2.37148 14.744" stroke="currentColor" stroke-linecap="round"/>
+                <path d="M14.3175 14.7431L9.36022 9.7858C8.57917 9.00475 8.57917 7.73842 9.36022 6.95737L14.3175 2.0001" stroke="currentColor" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+
+<div class="mobile-nav" data-mobile-nav>
+    <div class="mobile-nav__header">
+        {%- if settings.logo -%}
+            {% comment %}<img{% endcomment %}
+                {% comment %}src="{{ settings.logo | image_url: width: settings.logo.width }}"{% endcomment %}
+                {% comment %}alt="{{ settings.logo.alt | default: shop.name | escape }}"{% endcomment %}
+                {% comment %}class="v-header-logo__image"{% endcomment %}
+                {% comment %}width="{{ settings.logo.width }}"{% endcomment %}
+                {% comment %}height="{{ settings.logo.height }}"{% endcomment %}
+                {% comment %}loading="eager"{% endcomment %}
+            {% comment %}>{% endcomment %}
+            {% render 'v-icon-logo' %}
+        {%- else -%}
+            {{ shop.name }}
+        {%- endif -%}
+        <div style="display: flex; align-items: center">
+            <button type="button" class="v-header-icon icon-search desktop-only" data-search-trigger aria-label="Search">
+                <span>Search</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                    <path d="M7.44417 14.1481C8.76984 14.1493 10.0662 13.7578 11.1695 13.0229C12.2728 12.288 13.1336 11.2427 13.6433 10.0189C14.1527 8.79495 14.2871 7.44729 14.0294 6.14687C13.7717 4.84645 13.1335 3.65189 12.1958 2.71472C11.2587 1.77718 10.0647 1.13848 8.76473 0.87935C7.46474 0.620219 6.1171 0.752286 4.89214 1.25886C3.66718 1.76543 2.61989 2.62377 1.88262 3.72539C1.14536 4.82702 0.75121 6.12248 0.75 7.44805C0.75 9.22388 1.455 10.9264 2.71 12.1822C3.9654 13.4382 5.66755 14.1451 7.44333 14.1481M12.1983 12.2006L16.1667 16.1664" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <a href="{{ routes.cart_url }}" class="v-header-icon icon-cart" aria-label="Cart" style="margin-left: 15px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
+                    <path d="M0.975079 12.2504C1.73501 13.1655 3.14849 13.1655 5.9767 13.1655H6.43266C9.26088 13.1655 10.675 13.1655 11.4349 12.2504M0.975079 12.2504C0.215147 11.3346 0.476057 9.94518 0.997244 7.165C1.36771 5.1891 1.55263 4.20052 2.2562 3.61662M11.4349 12.2504C12.1949 11.3346 11.9339 9.94518 11.4128 7.165C11.0423 5.1891 10.8567 4.20052 10.1532 3.61662M10.1532 3.61662C9.45023 3.03271 8.44395 3.03271 6.4333 3.03271H5.97607C3.96541 3.03271 2.95977 3.03271 2.2562 3.61662" stroke="currentColor"/>
+                    <path d="M4.30469 3.0332V2.3999C4.30469 1.89602 4.50485 1.41277 4.86114 1.05647C5.21742 0.700168 5.70065 0.5 6.20452 0.5C6.70839 0.5 7.19162 0.700168 7.5479 1.05647C7.90419 1.41277 8.10435 1.89602 8.10435 2.3999V3.0332" stroke="currentColor" stroke-linecap="round"/>
+                </svg>
+                <span class="cart-count"></span>
+            </a>
+            <button class="mobile-nav__close" data-mobile-close aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M2.37148 2.00108L7.32874 6.95834C8.10979 7.73939 8.10979 9.00572 7.32874 9.78677L2.37148 14.744" stroke="currentColor" stroke-linecap="round"/>
+                    <path d="M14.3175 14.7431L9.36022 9.7858C8.57917 9.00475 8.57917 7.73842 9.36022 6.95737L14.3175 2.0001" stroke="currentColor" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div class="mobile-nav__content">
+        <ul class="mobile-nav__list">
+            {%- for link in linklists[main_menu].links -%}
+                <li class="mobile-nav__item"
+                    {% if link.links != blank %}data-has-submenu{% endif %}
+                >
+                    <div class="mobile-nav__link-wrapper">
+                        <a href="{{ link.url }}" class="mobile-nav__link">{{ link.title }}</a>
+                        {%- if link.links != blank -%}
+                            <button class="mobile-nav__toggle" data-toggle-submenu aria-label="open-submenu">
+                                {% render 'v-icon-chevron' %}
+                            </button>
+                        {%- endif -%}
+                    </div>
+
+                    {%- if link.links != blank -%}
+                        <ul class="mobile-nav__submenu">
+                            {%- for child_link in link.links -%}
+                                <li>
+                                    <a href="{{ child_link.url }}" class="mobile-nav__link--sub">
+                                        {{ child_link.title }}
+                                    </a>
+                                </li>
+                            {%- endfor -%}
+                        </ul>
+                    {%- endif -%}
+                </li>
+            {%- endfor -%}
+        </ul>
+    </div>
+</div>
+<div class="mobile-nav__overlay" data-mobile-close></div>
+
+<script>
+    class CustomHeader {
+        constructor() {
+            this.header = document.querySelector('[data-site-header]');
+            if (!this.header) return;
+
+
+            this.menuTriggers = this.header.querySelectorAll('[data-megamenu-trigger]');
+            this.menuPanels = this.header.querySelectorAll('[data-megamenu-panel]');
+
+
+            this.searchTrigger = document.querySelector('[data-search-trigger]');
+            this.searchModal = document.querySelector('[data-search-modal]');
+            this.searchClose = document.querySelectorAll('[data-search-close]');
+            this.searchInput = this.searchModal.querySelector('.search-modal__input');
+
+
+            this.mobileTrigger = document.querySelector('[data-mobile-trigger]');
+            this.mobileNav = document.querySelector('[data-mobile-nav]');
+            this.mobileClose = document.querySelectorAll('[data-mobile-close]');
+            this.submenuToggles = this.mobileNav.querySelectorAll('[data-toggle-submenu]');
+
+            this.isMegamenuOpen = false;
+            this.isSearchOpen = false;
+            this.isMobileNavOpen = false;
+
+            this.init();
+        }
+
+        init() {
+            this.menuTriggers.forEach(trigger => {
+                trigger.addEventListener('click', (event) => this.toggleMenu(event, trigger));
+            });
+
+            this.menuPanels.forEach(panel => {
+                const links = panel.querySelectorAll('.mega-menu__links-list a');
+                const displayImg = panel.querySelector('.mega-menu__display-img');
+
+                const placeholderData = panel.querySelector('.mega-menu__images').dataset;
+
+                if (!displayImg || !links.length) return;
+
+                const placeholderSrc = placeholderData.placeholderSrc || '';
+                const placeholderAlt = placeholderData.placeholderAlt || '';
+                const placeholderTitle = placeholderData.placeholderTitle || '';
+
+                links.forEach(link => {
+                    link.addEventListener('mouseenter', () => {
+                        const newSrc = link.dataset.imageSrc;
+                        const newAlt = link.dataset.imageAlt;
+                        const newTitle = link.dataset.imageTitle;
+
+                        displayImg.style.opacity = 0;
+
+                        setTimeout(() => {
+                            if (newSrc && newSrc !== '') {
+                                displayImg.src = newSrc;
+                                displayImg.alt = newAlt;
+                            } else {
+                                displayImg.src = placeholderSrc;
+                                displayImg.alt = placeholderAlt;
+                            }
+
+                            displayImg.style.opacity = 1;
+                        }, 150);
+                    });
+                });
+            });
+
+            if (this.searchTrigger) {
+                this.searchTrigger.addEventListener('click', () => this.openSearchModal());
+            }
+            this.searchClose.forEach(closeBtn => {
+                closeBtn.addEventListener('click', () => this.closeSearchModal());
+            });
+
+            if (this.mobileTrigger) {
+                this.mobileTrigger.addEventListener('click', () => this.openMobileNav());
+            }
+            this.mobileClose.forEach(closeBtn => {
+                closeBtn.addEventListener('click', () => this.closeMobileNav());
+            });
+            this.submenuToggles.forEach(toggle => {
+                toggle.addEventListener('click', (e) => this.toggleSubmenu(e));
+            });
+
+            document.addEventListener('click', (event) => this.handleClickOutside(event));
+            document.addEventListener('keydown', (event) => this.handleKeydown(event));
+            window.addEventListener('scroll', () => this.updateHeaderState(), { passive: true });
+        }
+
+        toggleMenu(event, trigger) {
+            event.preventDefault();
+            const targetHandle = trigger.getAttribute('data-megamenu-trigger');
+            const targetPanel = this.header.querySelector(`#mega-menu-${targetHandle}`);
+            if (!targetPanel) return;
+
+            const isOpening = !targetPanel.classList.contains('is-active');
+            const chevron = trigger.querySelector('.icon-chevron')
+
+            this.closeAllMenus(trigger);
+
+            if (isOpening) {
+
+                console.log('test')
+
+                targetPanel.classList.add('is-active');
+                trigger.setAttribute('aria-expanded', 'true');
+                if (chevron) chevron.classList.add('is-rotated')
+                this.isMegamenuOpen = true;
+            }
+
+            this.updateHeaderState();
+        }
+
+        closeAllMenus(keepActiveTrigger = null) {
+            this.menuPanels.forEach(panel => {
+                panel.classList.remove('is-active');
+            });
+            this.menuTriggers.forEach(t => {
+                if (t !== keepActiveTrigger) {
+                    t.setAttribute('aria-expanded', 'false');
+                }
+                const chevron = t.querySelector('.icon-chevron');
+                if (chevron) {
+                    chevron.classList.remove('is-rotated');
+                }
+            });
+            this.isMegamenuOpen = false;
+        }
+
+
+        openSearchModal() {
+            this.isSearchOpen = true;
+            this.searchModal.classList.add('is-visible');
+            // Фокус на поле ввода с небольшой задержкой
+            setTimeout(() => this.searchInput.focus(), 100);
+            this.updateHeaderState();
+        }
+
+        closeSearchModal() {
+            this.isSearchOpen = false;
+            this.searchModal.classList.remove('is-visible');
+            this.updateHeaderState();
+        }
+
+        openMobileNav() {
+            this.isMobileNavOpen = true;
+            this.mobileNav.classList.add('is-open');
+            this.updateHeaderState();
+        }
+
+        closeMobileNav() {
+            this.isMobileNavOpen = false;
+            this.mobileNav.classList.remove('is-open');
+            this.updateHeaderState();
+        }
+
+        toggleSubmenu(event) {
+
+            event.preventDefault();
+            const toggle = event.currentTarget;
+            const parentItem = toggle.closest('.mobile-nav__item');
+            if (parentItem) {
+                parentItem.classList.toggle('is-active');
+                const isOpening = parentItem.classList.contains('is-active');
+                toggle.innerHTML = isOpening ? `{% render 'v-icon-chevron' %}` : `{% render 'v-icon-chevron' %}`;
+            }
+        }
+
+
+        handleClickOutside(event) {
+
+            if (this.isMegamenuOpen && !this.header.contains(event.target)) {
+                this.closeAllMenus();
+                this.updateHeaderState();
+            }
+
+        }
+
+        handleKeydown(event) {
+            if (event.key === 'Escape') {
+                if (this.isSearchOpen) this.closeSearchModal();
+                if (this.isMobileNavOpen) this.closeMobileNav();
+                if (this.isMegamenuOpen) {
+                    this.closeAllMenus();
+                    this.updateHeaderState();
+                }
+            }
+        }
+
+
+        updateHeaderState() {
+            const isScrolled = window.scrollY > 50;
+            const isActive = this.isMegamenuOpen || this.isSearchOpen || this.isMobileNavOpen;
+
+            if (isActive) {
+                this.header.classList.add('header-is-active');
+                this.header.classList.remove('header-is-transparent');
+                // document.body.classList.add('body-no-scroll');
+            } else {
+                this.header.classList.remove('header-is-active');
+                // document.body.classList.remove('body-no-scroll');
+
+                if (isScrolled) {
+                    this.header.classList.remove('header-is-transparent');
+                } else {
+                    this.header.classList.add('header-is-transparent');
+                }
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        new CustomHeader();
+    });
+</script>
+
+
+{% schema %}
+{
+  "name": "V-Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu navigation",
+      "default": "main-menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "promo_image",
+      "label": "Default picture"
+    }
+  ],
+  "presets": [
+    {
+      "name": "V-Header",
+      "category": "Custom Sections (valmax)"
+    }
+  ]
+}
+{% endschema %}

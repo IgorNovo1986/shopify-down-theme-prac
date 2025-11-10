@@ -67,7 +67,7 @@
   }
 
   .slider__section-content {
-    width: 475px;
+    max-width: 475px;
   }
 
   .slider__section-content .description {
@@ -87,9 +87,25 @@
     line-height: 120%;
     letter-spacing: -2%;
     color: #FAF7F1;
-
     margin-top: 25px;
     margin-bottom: 55px;
+  }
+
+  @media screen and (max-width: 992px) {
+    .slider__section {
+      padding-top: 20px;
+      padding-bottom: 80px;
+    }
+
+    .slider__section-content .description {
+      font-size: 18px;
+    }
+
+    .slider__section-content .title{
+      font-size: 34px;
+      margin-top: 0px;
+      margin-bottom: 35px;
+    }
   }
 
   .slider__section-wrapper-slide {
@@ -99,6 +115,7 @@
     padding: 28px;
     display: flex;
     transition: transform 0.3s ease-in-out;
+    border: 1px solid #FCF6EC1A;
   }
 
   .slider__section-slide {
@@ -108,22 +125,11 @@
     gap: 40px;
   }
 
-  @media screen and (max-width: 992px) {
-    .slider__section-slide{
-      flex-direction: column;
-    }
-  }
-
   .slider__section-slide-content span {
     font-weight: 400;
     font-size: 16px;
     line-height: 106%;
   }
-
-  .slider__section-slide-content div {
-    max-width: 435px;
-  }
-
 
   .slider__section-slide-content div h2 {
     font-weight: 500;
@@ -138,18 +144,43 @@
     font-size: 18px;
     line-height: 140%;
     margin: -10px 0;
+    color: #FAF7F1;
+  }
+
+  @media screen and (max-width: 992px) {
+    .slider__section-slide{
+      flex-direction: column;
+    }
+
+    .slider__section-wrapper-slide {
+      padding-bottom: 80px !important;
+    }
+
+    .slider__section-slide-content span {
+      font-size: 14px;
+    }
+
+    .slider__section-slide-content div h2 {
+      font-size: 20px;
+      line-height: 124%;
+    }
+
+    .slider__section-slide-content div p {
+      font-size: 16px;
+    }
+  }
+
+  .slider__section-wrapper-slide {
+    padding: 15px 30px;
+  }
+
+  .slider__section-slide-content div {
+    max-width: 435px;
   }
 
   .slider__section-slide-content,
   .slider__section-slide-img {
     width: 50%;
-  }
-
-  @media screen and (max-width: 992px) {
-    .slider__section-slide-content,
-    .slider__section-slide-img {
-      width: 100%;
-    }
   }
 
   .slider__section-slide-wrapper-img{
@@ -159,6 +190,32 @@
   .slider__section-slide-wrapper-img svg{
     height: 476px;
     width: 100%;
+  }
+
+  @media screen and (max-width: 992px) {
+    .slider__section-slide-content,
+    .slider__section-slide-img {
+      width: 100%;
+    }
+
+    .slider__section-slide-wrapper-img{
+      height: 253px;
+    }
+
+    .slider__section-slide-wrapper-img svg{
+      height: 253px;
+    }
+
+    .slider__section-slide-btn {
+      position: absolute;
+      bottom: 100px !important;
+      left: 40px !important;
+    }
+
+    .slider__section-slide-btn button{
+      width: 32px !important;
+      height: 32px !important;
+    }
   }
 
   .slider__section-img{
@@ -348,7 +405,7 @@
       "type": "text",
       "id": "sub_heading",
       "label": "Sub heading",
-      "default": "Finding Balance in a Modern World"
+      "default": "Harmony of Body, Mind, and Space — All in One Solution"
     },
     {
       "type": "color_background",
