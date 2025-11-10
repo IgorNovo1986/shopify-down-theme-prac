@@ -36,7 +36,8 @@
       "type": "v-header",
       "name": "V-Header",
       "settings": {
-        "menu": "main-menu"
+        "menu": "main-menu",
+        "promo_image": "shopify://shop_images/Placeholder-1.png"
       }
     }
   },
